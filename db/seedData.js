@@ -1,15 +1,72 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
-// const { } = require('./');
+ const { createUser, createActivity, createRoutine, getRoutinesWithoutActivities, getAllActivities, addActivityToRoutine } = require('./');
 const client = require("./client")
 
 async function dropTables() {
   console.log("Dropping All Tables...")
   // drop all tables, in the correct order
+  try {
+     await client.query(`
+      DROP TABLE IF EXISTS routineactivities;
+      DROP TABLE IF EXISTS routines;
+      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS activities;
+
+    `);
+
+    console.log("FINISHED DROPPING TABLES");
+  } catch (error) {
+    console.log("ERROR Dropping Tables");
+    throw error; // we pass the error up to the function that calls dropTables
+  }
 }
 
 async function createTables() {
   console.log("Starting to build tables...")
   // create all tables, in the correct order
+  try {
+    await client.query(`
+    CREATE TABLE users (
+      id SERIAL PRIMARY KEY,
+      username varchar(255) UNIQUE NOT NULL,
+      password varchar(255) NOT NULL
+      );
+    `);
+
+    await client.query(`
+    CREATE TABLE activities (
+      id SERIAL PRIMARY KEY,
+      name varchar(255) UNIQUE NOT NULL,
+      description varchar(255) NOT NULL
+      );
+    `);
+
+    await client.query(`
+    CREATE TABLE routines (
+      id SERIAL PRIMARY KEY,
+      "creatorId" INTEGER REFERENCES users(id),
+      "isPublic" BOOLEAN DEFAULT true,
+      name varchar(255) NOT NULL,
+      goal varchar(255) NOT NULL
+      );
+    `);
+
+    await client.query(`
+    CREATE TABLE routine_activities (
+      id SERIAL PRIMARY KEY,
+      "routineActivityId" INTEGER REFERENCES activities(id) UNIQUE,
+      "routineId" INTEGER REFERENCES routines(id) UNIQUE,
+      duration INTEGER,
+      count INTEGER
+      );
+    `);
+
+
+    console.log("FINISHED BUILDING TABLES");
+    } catch (error) {
+      console.log("ERROR Building Tables");
+      throw error; // we pass the error up to the function that calls createTables
+    }
 }
 
 /* 
