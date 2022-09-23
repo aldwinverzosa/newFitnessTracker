@@ -7,7 +7,7 @@ async function dropTables() {
   // drop all tables, in the correct order
   try {
      await client.query(`
-      DROP TABLE IF EXISTS routineactivities;
+      DROP TABLE IF EXISTS routine_activities;
       DROP TABLE IF EXISTS routines;
       DROP TABLE IF EXISTS users;
       DROP TABLE IF EXISTS activities;
@@ -37,7 +37,7 @@ async function createTables() {
     CREATE TABLE activities (
       id SERIAL PRIMARY KEY,
       name varchar(255) UNIQUE NOT NULL,
-      description varchar(255) NOT NULL
+      description TEXT NOT NULL
       );
     `);
 
@@ -54,8 +54,8 @@ async function createTables() {
     await client.query(`
     CREATE TABLE routine_activities (
       id SERIAL PRIMARY KEY,
-      "routineActivityId" INTEGER REFERENCES activities(id) UNIQUE,
-      "routineId" INTEGER REFERENCES routines(id) UNIQUE,
+      "routineActivityId" INTEGER REFERENCES activities(id),
+      "routineId" INTEGER REFERENCES routines(id),
       duration INTEGER,
       count INTEGER
       );
@@ -171,6 +171,7 @@ async function createInitialRoutineActivities() {
   const [bicep1, bicep2, chest1, chest2, leg1, leg2, leg3] =
     await getAllActivities()
 
+    
   const routineActivitiesToCreate = [
     {
       routineId: bicepRoutine.id,
