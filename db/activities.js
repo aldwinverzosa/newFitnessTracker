@@ -17,10 +17,35 @@ async function getAllActivities() {
 }
 
 async function getActivityById(id) {
+
+  try {
+    const { rows } = await client.query(`
+    SELECT *
+    FROM activities
+    WHERE activities.id=$1;
+    `, [id]);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
   
 }
 
 async function getActivityByName(name) {
+
+  try {
+    const { rows } = await client.query(`
+    SELECT *
+    FROM activities
+    WHERE activities.name=$1;
+    `, [name]);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
 
 }
 
@@ -28,14 +53,19 @@ async function getActivityByName(name) {
 // This must be where we need to output the array of activities on the routines
 async function attachActivitiesToRoutines(routines) {
 
-  //console.log("Inside attach activities to routines and routine is", routines);
+  console.log("Inside attach activities to routines and routine is", routines.id);
+  let id = routines.id;
+  
   try {
     const { rows } = await client.query(`
-    SELECT *
+    SELECT "routineActivityId", "routineId", duration, count, activities.id, activities.name, activities.description
     FROM routine_activities
-    INNER JOIN routines
-    ON routine_activities."routineId"=routines.id;
+    INNER JOIN activities
+      ON routine_activities."routineActivityId"=activities.id
+    WHERE routine_activities."routineId"=${id};
+    
     `);
+
 
     return rows;
   } catch (error) {

@@ -34,6 +34,8 @@ async function getUser({ username, password }) {
   const isValid = await bcrypt.compare(password, hashedPassword);
   if (isValid) {
     return user;
+  } else {
+    return ("Password is not correct");
   }
 
 }

@@ -73,7 +73,31 @@ async function getPublicRoutinesByUser(username) {
 async function getAllPublicRoutines() {
 }
 
-async function getPublicRoutinesByActivity({id}) {
+async function getPublicRoutinesByActivity(id) {
+
+  console.log("Inside getPublicRoutinesByActivity", id);
+
+  //I think I need to grab all public routines that are associated with the activity Id passed in.
+  //Once I get those rows then I call map on each row to attach activity to routine.
+  //then do routine.activity = activityArr;
+  //return routine
+  try {
+    const { rows } = await client.query(`
+    --SELECT "routineActivityId", "routineId", duration, count, activities.id, activities.name, activities.description
+    SELECT *
+    FROM routines
+    INNER JOIN routine_activities
+      ON routine_activities."routineActivityId"=${id}
+    INNER JOIN activities
+      ON routine_activities."routineId"=routines.id
+    WHERE "creatorId"=${id} AND "isPublic"=true;
+        
+    `);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
 }
 
 async function createRoutine({creatorId, creatorName, isPublic, name, goal}) {
