@@ -45,6 +45,7 @@ async function createTables() {
     CREATE TABLE routines (
       id SERIAL PRIMARY KEY,
       "creatorId" INTEGER REFERENCES users(id),
+      "creatorName" varchar(255) NOT NULL,
       "isPublic" BOOLEAN DEFAULT true,
       name varchar(255) NOT NULL,
       goal varchar(255) NOT NULL
@@ -134,24 +135,28 @@ async function createInitialRoutines() {
   const routinesToCreate = [
     {
       creatorId: 2,
+      creatorName: "albert",
       isPublic: false,
       name: "Bicep Day",
       goal: "Work the Back and Biceps.",
     },
     {
       creatorId: 1,
+      creatorName: "sandra",
       isPublic: true,
       name: "Chest Day",
       goal: "To beef up the Chest and Triceps!",
     },
     {
       creatorId: 1,
+      creatorName: "sandra",
       isPublic: false,
       name: "Leg Day",
       goal: "Running, stairs, squats",
     },
     {
       creatorId: 2,
+      creatorName: "albert",
       isPublic: true,
       name: "Cardio Day",
       goal: "Running, stairs. Stuff that gets your heart pumping!",

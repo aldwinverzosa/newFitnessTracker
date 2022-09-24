@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const { getUserByUsername, createUser, getUserById } = require('../db');
+const { getUserByUsername, createUser, getUserById, getAllRoutinesByUser, getPublicRoutinesByUser, attachActivitiesToRoutines } = require('../db');
 
 
 router.use((req, res, next) => {
@@ -110,36 +110,43 @@ router.get('/:username/routines', async (req, res) => {
 
   const prefix = 'Bearer '
   const auth = req.header('Authorization');
-  const { username } = req.params.username;
-  let bPublicOnly = true;
+  let token = '';
+  let activitiesArr = [];
+  
+  console.log("User name in api/users/username is and auth is", req.params.username, auth);
 
   if (!auth) {
-    console.log("No Authorization provided but can send only public routines");
-    bPublicOnly = true;
+    //do nothing
   } else if (auth.startsWith(prefix)) {
-      const token = auth.slice(prefix.length);
+    token = auth.slice(prefix.length);
+    console.log("Token inside of :username/routines is", token);
+  }
 
-      try {
-          const { id } = jwt.verify(token, process.env.JWT_SECRET);
-    
-          if (id) {
-            req.user = await getUserById(id);
-            //If the logged in user is making the request with their own username then send both public and private
-            if (req.user.username === username) {
-              bPublicOnly = false;
-            }
-            res.send({user: req.user});
-          } else {
-            res.send({message: "Invalid token submitted"});
+  try {
+
+      if (token !== '') {
+        const { id } = jwt.verify(token, process.env.JWT_SECRET);
+          
+        if (id) {
+          req.user = await getUserById(id);
+          //If the logged in user is making the request with their own username then send both public and private
+          if (req.user.username === req.params.username) {
+            const allRoutines = await getAllRoutinesByUser(req.params.username);
+            activitiesArr = await attachActivitiesToRoutines(allRoutines);
+            res.send(allRoutines);
           }
-      } catch (error) {
-          console.log(error);
+        }
+      } else {
+        const publicRoutines = await getPublicRoutinesByUser(req.params.username);
+        //activitiesArr = await attachActivitiesToRoutines(publicRoutines);
+        activitiesArr = await attachActivitiesToRoutines(publicRoutines);
+        publicRoutines.activity = activitiesArr;
+        console.log("After attachment Public routines are ", publicRoutines);
+        res.send(publicRoutines);
       }
-  } else {
-        res.send({
-          name: 'AuthorizationHeaderError',
-          message: `Authorization token must start with ${ prefix }`
-        });
+
+  } catch (error) {
+    console.log(error);
   }
 
 });

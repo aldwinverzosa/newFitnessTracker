@@ -25,7 +25,23 @@ async function getActivityByName(name) {
 }
 
 // select and return an array of all activities
+// This must be where we need to output the array of activities on the routines
 async function attachActivitiesToRoutines(routines) {
+
+  //console.log("Inside attach activities to routines and routine is", routines);
+  try {
+    const { rows } = await client.query(`
+    SELECT *
+    FROM routine_activities
+    INNER JOIN routines
+    ON routine_activities."routineId"=routines.id;
+    `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
 }
 
 // return the new activity
