@@ -94,7 +94,22 @@ async function createActivity({ name, description }) {
 // don't try to update the id
 // do update the name and description
 // return the updated activity
-async function updateActivity({ id, ...fields }) {
+async function updateActivity(id, name, description) {
+
+  console.log("Inside upDate activity", id, name, description);
+
+  try {
+    const { rows } = await client.query(`
+    UPDATE activities 
+    SET name=$2, description=$3
+    WHERE activities.id=$1
+    RETURNING *;
+    `, [id, name, description]);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
 
 }
 

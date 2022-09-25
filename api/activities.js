@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllActivities, getPublicRoutinesByActivity, attachActivitiesToRoutines } = require('../db');
+const { getAllActivities, getPublicRoutinesByActivity, attachActivitiesToRoutines, getActivityById, updateActivity } = require('../db');
 const router = express.Router();
 
 // GET /api/activities/:activityId/routines
@@ -33,5 +33,16 @@ router.get('/', async (req, res) => {
 
 
 // PATCH /api/activities/:activityId
+router.patch('/:activityId', async (req, res) => {
+
+    const { name, description } = req.body;
+    console.log("Inside patch activity and ", name, description, req.params.activityId);
+
+    //console.log("Inside Patch activity");
+    const activity = await updateActivity(req.params.activityId, name, description);
+    //console.log("activities is ", activities);
+    res.send(activity);
+
+});
 
 module.exports = router;
