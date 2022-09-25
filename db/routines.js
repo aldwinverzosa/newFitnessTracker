@@ -7,8 +7,8 @@ async function getRoutineById(id){
     const { rows: routine } = await client.query(`
     SELECT *
     FROM routines
-    WHERE id=${id};
-    `);
+    WHERE id=$1;
+    `, [id]);
 
     return routine;
   } catch (error) {
@@ -129,7 +129,31 @@ async function createRoutine({creatorId, creatorName, isPublic, name, goal}) {
 
 }
 
-async function updateRoutine({id, ...fields}) {
+async function updateRoutine(id, fields = {}) {
+
+  console.log("Inside updateRoutine");
+  // build the set string
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${ key }"=$${ index + 1 }`
+  ).join(', ');
+
+  console.log("set String is ", setString);
+
+  try {
+    if (setString.length > 0) {
+      await client.query(`
+      UPDATE routines 
+      SET ${ setString }
+      WHERE routines.id=${ id }
+      RETURNING *;
+    `, Object.values(fields));
+    }
+
+    return getRoutineById(id);
+  } catch (error) {
+    throw error;
+  }
+
 }
 
 async function destroyRoutine(id) {

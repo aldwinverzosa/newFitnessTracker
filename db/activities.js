@@ -94,19 +94,24 @@ async function createActivity({ name, description }) {
 // don't try to update the id
 // do update the name and description
 // return the updated activity
-async function updateActivity(id, name, description) {
+async function updateActivity(id, fields = {}) {
 
-  console.log("Inside upDate activity", id, name, description);
+  // build the set string
+  const setString = Object.keys(fields).map(
+    (key, index) => `"${ key }"=$${ index + 1 }`
+  ).join(', ');
 
   try {
-    const { rows } = await client.query(`
-    UPDATE activities 
-    SET name=$2, description=$3
-    WHERE activities.id=$1
-    RETURNING *;
-    `, [id, name, description]);
+    if (setString.length > 0) {
+      await client.query(`
+      UPDATE activities 
+      SET ${ setString }
+      WHERE activities.id=${ id }
+      RETURNING *;
+    `, Object.values(fields));
+    }
 
-    return rows;
+    return getActivityById(id);
   } catch (error) {
     throw error;
   }
