@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const { storeCurrentToken } = require('../auth');
 require('dotenv').config();
 const { getUserByUsername, createUser, getUserById, getAllRoutinesByUser, getPublicRoutinesByUser, attachActivitiesToRoutines } = require('../db');
+const { setUser } = require('./utils');
 
 
 router.use((req, res, next) => {

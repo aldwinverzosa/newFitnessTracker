@@ -1,7 +1,11 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const { attachActivitiesToRoutines } = require('../db');
 const router = express.Router();
-const { getAllRoutines } = require('../db/routines')
+const { getAllRoutines, createRoutine, updateRoutine } = require('../db/routines')
+const { requireUser } = require('./utils');
+const { getUserById } = require('../db/users');
 
 // GET /api/routines
 router.get('/', async (req, res) => {
@@ -17,8 +21,57 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/routines
+router.post('/', async (req, res, next) => {
+
+    const { name, goal, isPublic } = req.body;
+   
+    const prefix = 'Bearer '
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+        console.log("No Authorization provided");
+    } else if (auth.startsWith(prefix)) {
+          const token = auth.slice(prefix.length);
+          try {
+            const { id } = jwt.verify(token, process.env.JWT_SECRET);
+            if (id) {
+              const user = await getUserById(id);
+
+              const postData = {};
+              postData.creatorId = user.id;
+              postData.creatorName = user.username;
+              postData.isPublic = isPublic;
+              postData.name = name;
+              postData.goal = goal;
+
+              const routine = await createRoutine(postData);
+              res.send({routine});
+            } 
+        } catch ({ name, message }) {
+        next({ name, message });
+        }
+    } else {
+        next({message: "No token passed in."})
+    }
+});
 
 // PATCH /api/routines/:routineId
+// This requires a logged in user AND the user logged in must be the owner of the routine
+// PATCH /api/activities/:activityId
+router.patch('/:routineId', async (req, res) => {
+
+    const { name, goal, isPublic } = req.body;
+    console.log("Inside patch routine and ", name, goal, isPublic, req.params.routineId);
+
+    //TODO: Perform the check in this routine to make sure the logged in user is the owner 
+    //      of this routine.
+
+    //console.log("Inside Patch routine");
+    const routine = await updateRoutine(req.params.routineId, {name, goal, isPublic});
+    //console.log("routine is ", routine);
+    res.send(routine);
+
+});
 
 // DELETE /api/routines/:routineId
 

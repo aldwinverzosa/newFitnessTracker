@@ -39,7 +39,7 @@ router.patch('/:activityId', async (req, res) => {
     console.log("Inside patch activity and ", name, description, req.params.activityId);
 
     //console.log("Inside Patch activity");
-    const activity = await updateActivity(req.params.activityId, name, description);
+    const activity = await updateActivity(req.params.activityId, {name, description});
     //console.log("activities is ", activities);
     res.send(activity);
 
