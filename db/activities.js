@@ -53,7 +53,7 @@ async function getActivityByName(name) {
 // This must be where we need to output the array of activities on the routines
 async function attachActivitiesToRoutines(routines) {
 
-  console.log("Inside attach activities to routines and routine is", routines.id);
+  console.log("Inside attach activities to routines and routine is", routines);
   let id = routines.id;
   
   try {
@@ -78,13 +78,13 @@ async function attachActivitiesToRoutines(routines) {
 async function createActivity({ name, description }) {
 
   try {
-    const { rows: [activity] } = await client.query(`
+    const { rows } = await client.query(`
     INSERT INTO activities(name, description) VALUES ($1, $2)
-    ON CONFLICT (name) DO NOTHING
-    RETURNING *;
+    --ON CONFLICT (name) DO NOTHING;
+    --RETURNING *;
     `, [name, description]);
 
-    return activity;
+    return rows;
   } catch (error) {
     throw error;
   }

@@ -95,6 +95,7 @@ async function createInitialUsers() {
   }
 }
 async function createInitialActivities() {
+
   try {
     console.log("Starting to create activities...")
 
@@ -117,10 +118,13 @@ async function createInitialActivities() {
       { name: "treadmill", description: "running" },
       { name: "stairs", description: "climb those stairs" },
     ]
-    const activities = await Promise.all(activitiesToCreate.map(createActivity))
+    for (let i = 0; i < activitiesToCreate.length; i++) {
+      await createActivity(activitiesToCreate[i]);
+    }
+    //const activities = await Promise.all(activitiesToCreate.map(createActivity))
 
     console.log("activities created:")
-    console.log(activities)
+    console.log(activitiesToCreate);
 
     console.log("Finished creating activities!")
   } catch (error) {
@@ -174,7 +178,11 @@ async function createInitialRoutineActivities() {
   const [bicepRoutine, chestRoutine, legRoutine, cardioRoutine] =
     await getRoutinesWithoutActivities()
   const [bicep1, bicep2, chest1, chest2, leg1, leg2, leg3] =
-    await getAllActivities()
+    await getAllActivities();
+
+    //console.log("bicep1 is ", bicep1);
+    //console.log("leg3 is ", leg3);
+    //bicep1 is 1, bicep2 is 2,...,leg3 is 7
 
     
   const routineActivitiesToCreate = [

@@ -1,3 +1,4 @@
+const { attachActivitiesToRoutines } = require('./activities');
 const client = require('./client');
 
 async function getRoutineById(id){
@@ -17,6 +18,8 @@ async function getRoutineById(id){
 
 }
 
+//TM DEBUG: Should this only return those routines whose AcivityArray length = 0?
+//If so, this needs to change to reflect that.
 async function getRoutinesWithoutActivities(){
 
   try {
@@ -33,6 +36,20 @@ async function getRoutinesWithoutActivities(){
 }
 
 async function getAllRoutines() {
+
+  console.log("Gettting all public routines");
+  try {
+    const { rows } = await client.query(`
+    SELECT * 
+    FROM routines
+    WHERE "isPublic"=true;
+    `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
 }
 
 async function getAllRoutinesByUser(username) {
@@ -79,20 +96,17 @@ async function getPublicRoutinesByActivity(id) {
 
   //I think I need to grab all public routines that are associated with the activity Id passed in.
   //Once I get those rows then I call map on each row to attach activity to routine.
-  //then do routine.activity = activityArr;
-  //return routine
   try {
     const { rows } = await client.query(`
-    --SELECT "routineActivityId", "routineId", duration, count, activities.id, activities.name, activities.description
-    SELECT *
+    SELECT "creatorId", "creatorName", "isPublic", routines.name, goal, routine_activities."routineId" AS id
     FROM routines
     INNER JOIN routine_activities
-      ON routine_activities."routineActivityId"=${id}
+      ON routines.id=routine_activities."routineId"
     INNER JOIN activities
-      ON routine_activities."routineId"=routines.id
-    WHERE "creatorId"=${id} AND "isPublic"=true;
-        
+      ON activities.id=routine_activities."routineActivityId"
+    WHERE routines.id=routine_activities."routineId" AND routines."isPublic" = true;
     `);
+
     return rows;
   } catch (error) {
     throw error;
