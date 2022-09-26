@@ -1,7 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const { attachActivitiesToRoutines } = require('../db');
+const { attachActivitiesToRoutines, addActivityToRoutine } = require('../db');
 const router = express.Router();
 const { getAllRoutines, createRoutine, updateRoutine, getRoutineById, destroyRoutine } = require('../db/routines')
 const { requireUser } = require('./utils');
@@ -130,5 +130,17 @@ router.delete('/:routineId', async (req, res, next) => {
 });
 
 // POST /api/routines/:routineId/activities
+router.post('/:routineId/activities', async (req, res, next) => {
+
+  const { activityId, count, duration } = req.body;
+
+  console.log("Inside post activity to a routine", activityId, count, duration);
+  try {
+    const routineActivity = await addActivityToRoutine(req.params.routineId, activityId, count, duration);
+    res.send(routineActivity);
+  } catch ({ name, message }) {
+    next({ name, message });
+  }
+});
 
 module.exports = router;

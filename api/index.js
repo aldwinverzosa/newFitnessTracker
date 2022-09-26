@@ -4,6 +4,9 @@ const { getUserById } = require('../db');
 
 // GET /api/health
 router.get('/health', async (req, res, next) => {
+
+    console.log("Some inquiring about health of our server back-end");
+    
 });
 
 // ROUTER: /api/users

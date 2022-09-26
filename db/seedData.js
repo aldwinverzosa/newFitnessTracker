@@ -57,9 +57,8 @@ async function createTables() {
       id SERIAL PRIMARY KEY,
       "routineActivityId" INTEGER REFERENCES activities(id),
       "routineId" INTEGER REFERENCES routines(id),
-      duration INTEGER,
-      count INTEGER
-      );
+      duration INTEGER NOT NULL,
+      count INTEGER NOT NULL);
     `);
 
 

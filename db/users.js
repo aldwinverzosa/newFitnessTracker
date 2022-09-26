@@ -6,9 +6,10 @@ const bcrypt = require('bcrypt');
 // user functions
 async function createUser({ username, password }) {
   
-  //const SALT_COUNT = 10;
+  const SALT_COUNT = 10;
 
-  //const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  password = hashedPassword;
 
   //TVM DEBUG : what do we do with the hashed password here?
   // Does it get put into the db in place of the actual password?

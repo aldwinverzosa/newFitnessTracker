@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { storeCurrentToken } = require('../auth');
 require('dotenv').config();
@@ -19,6 +20,7 @@ router.use((req, res, next) => {
 router.post('/login', async (req, res, next) => {
 
     const { username, password } = req.body;
+    console.log("password is ", password);
     
     // request must have both
     if (!username || !password) {
@@ -30,8 +32,10 @@ router.post('/login', async (req, res, next) => {
 
     try {
         const user = await getUserByUsername(username);
-                
-        if (user && user.password === password) {
+        const hashedPassword = user.password;
+        const isValid = await bcrypt.compare(password, hashedPassword);
+
+        if (user && isValid) {
           // create token & return to user
           const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET);
           req.user = user;

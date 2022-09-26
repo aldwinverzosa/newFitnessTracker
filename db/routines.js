@@ -15,8 +15,6 @@ async function getRoutineById(id){
   } catch (error) {
     throw error;
   }
-
-
 }
 
 //TM DEBUG: Should this only return those routines whose AcivityArray length = 0?
@@ -89,6 +87,42 @@ async function getPublicRoutinesByUser(username) {
 }
 
 async function getAllPublicRoutines() {
+
+  console.log("Getting all public routines");
+  try {
+    const { rows } = await client.query(`
+    SELECT * 
+    FROM routines
+    WHERE "isPublic"= true;
+   `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
+}
+
+//Here we are passing in the routineActivityId of a specific item in the routine_activities table
+//We need to return the routine that is the parent of this particular activity.
+//This will be used later to determine if the user logged in can modify the count and duration
+//fields in the routine_activity item.
+async function getRoutineByActivityId(id) {
+
+  try {
+    const { rows } = await client.query(`
+    SELECT *
+    FROM routines
+    INNER JOIN routine_activities
+      ON routine_activities."routineActivityId"=${id}
+    WHERE routines.id=routine_activities."routineId";
+    `);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
 }
 
 async function getPublicRoutinesByActivity(id) {
@@ -160,8 +194,11 @@ async function updateRoutine(id, fields = {}) {
 async function destroyRoutine(id) {
 
   console.log("Inside destroy routine", id);
+
+  //We need to delete the routine activities first because of the dependency relationship
+  //with the routine itself. Like the situation involving dropping tables in seedData.
   destroyRoutineActivity(id);
-  
+
   try {
     const { rows: routine } = await client.query(`
     DELETE 
@@ -179,6 +216,7 @@ async function destroyRoutine(id) {
 
 module.exports = {
   getRoutineById,
+  getRoutineByActivityId,
   getRoutinesWithoutActivities,
   getAllRoutines,
   getAllPublicRoutines,
