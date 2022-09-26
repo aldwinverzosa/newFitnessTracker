@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const { attachActivitiesToRoutines } = require('../db');
 const router = express.Router();
-const { getAllRoutines, createRoutine, updateRoutine, getRoutineById } = require('../db/routines')
+const { getAllRoutines, createRoutine, updateRoutine, getRoutineById, destroyRoutine } = require('../db/routines')
 const { requireUser } = require('./utils');
 const { getUserById } = require('../db/users');
 const { reset } = require('nodemon');
@@ -100,6 +100,34 @@ router.patch('/:routineId', async (req, res, next) => {
 });
 
 // DELETE /api/routines/:routineId
+router.delete('/:routineId', async (req, res, next) => {
+
+    console.log("Inside delete routine:", req.params.routineId);
+
+    //TODO: Perform the check in this routine to make sure the logged in user is the owner 
+    //      of this routine.
+    const prefix = 'Bearer '
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+        next({message: "No Authorization provided"});
+    } else if (auth.startsWith(prefix)) {
+        const token = auth.slice(prefix.length); 
+        try {
+            const { id } = jwt.verify(token, process.env.JWT_SECRET);
+            const routine = await getRoutineById(req.params.routineId);
+            console.log("routine id and id are", id, routine[0].creatorId);
+            if (id === routine[0].creatorId ) {
+              const deletedRoutine = await destroyRoutine(req.params.routineId); 
+              res.send(deletedRoutine);
+            } else {
+              next({message: "You are not the owner of this routine."}) 
+            }
+        } catch ({ name, message }) {
+            next({ name, message });
+        }
+    }
+});
 
 // POST /api/routines/:routineId/activities
 

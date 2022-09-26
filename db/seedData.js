@@ -84,10 +84,13 @@ async function createInitialUsers() {
       { username: "sandra", password: "sandra123" },
       { username: "glamgal", password: "glamgal123" },
     ]
-    const users = await Promise.all(usersToCreate.map(createUser))
 
+    for (let i = 0; i < usersToCreate.length; i++) {
+      await createUser(usersToCreate[i]);
+    }
+    
     console.log("Users created:")
-    console.log(users)
+    console.log(usersToCreate);
     console.log("Finished creating users!")
   } catch (error) {
     console.error("Error creating users!")
@@ -138,28 +141,28 @@ async function createInitialRoutines() {
 
   const routinesToCreate = [
     {
-      creatorId: 2,
+      creatorId: 1,
       creatorName: "albert",
       isPublic: false,
       name: "Bicep Day",
       goal: "Work the Back and Biceps.",
     },
     {
-      creatorId: 1,
+      creatorId: 2,
       creatorName: "sandra",
       isPublic: true,
       name: "Chest Day",
       goal: "To beef up the Chest and Triceps!",
     },
     {
-      creatorId: 1,
+      creatorId: 2,
       creatorName: "sandra",
       isPublic: false,
       name: "Leg Day",
       goal: "Running, stairs, squats",
     },
     {
-      creatorId: 2,
+      creatorId: 1,
       creatorName: "albert",
       isPublic: true,
       name: "Cardio Day",

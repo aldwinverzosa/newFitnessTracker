@@ -33,6 +33,22 @@ async function updateRoutineActivity ({id, ...fields}) {
 }
 
 async function destroyRoutineActivity(id) {
+
+  console.log("Inside destroy routine activities");
+  try {
+    const { rows } = await client.query(`
+    DELETE
+    FROM routine_activities
+    WHERE "routineId"=$1;
+    `, [id]);
+
+    //WE shouldn't need to return anything here; just delete the routine_activities
+    //return rows;
+  } catch (error) {
+    throw error;
+  }
+
+
 }
 
 async function canEditRoutineActivity(routineActivityId, userId) {

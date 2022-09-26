@@ -1,5 +1,6 @@
 const { attachActivitiesToRoutines } = require('./activities');
 const client = require('./client');
+const { destroyRoutineActivity } = require('./routine_activities');
 
 async function getRoutineById(id){
 
@@ -157,6 +158,23 @@ async function updateRoutine(id, fields = {}) {
 }
 
 async function destroyRoutine(id) {
+
+  console.log("Inside destroy routine", id);
+  destroyRoutineActivity(id);
+  
+  try {
+    const { rows: routine } = await client.query(`
+    DELETE 
+    FROM routines
+    WHERE id=$1;
+    `, [id]);
+
+    routine.success = true;
+    return routine;
+  } catch (error) {
+    throw error;
+  }
+
 }
 
 module.exports = {
