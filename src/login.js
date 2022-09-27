@@ -36,12 +36,12 @@ const Login = (props) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          user: {
+        body: JSON.stringify(
+          {
             username: document.getElementById("username").value,
             password: document.getElementById("password").value
           }
-        })
+        )
     });
     
     const data = await response.json();
@@ -54,13 +54,12 @@ const Login = (props) => {
         document.getElementById("password").value = "";
         document.getElementById("username").focus();
     } else {
-        bError = false;
-        alert(data.data.message);
-        setToken(data.data.token);
-        console.log("Successful token is ", data.data.token);
-        setCurrentUser(UserName);
-        storeCurrentUser(UserName);
-        storeCurrentToken(token);
+        //bError = false;
+        alert(data.message);
+        //setToken(data.token);
+        //setCurrentUser(data.user.username);
+        storeCurrentUser(data.user);
+        storeCurrentToken(data.token);
         //await setCurrentUserMessages(currentUserMessages);
         //navigate('/posts');  
      }

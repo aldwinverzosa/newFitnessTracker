@@ -12,20 +12,6 @@
 
   }
 
-  function storeCurrentPost(post) {
-    localStorage.setItem('currentPost', JSON.stringify(post));
-  }
-
-  function getCurrentPost() {
-    const post = JSON.parse(localStorage.getItem('currentPost'));
-    return post;
-  }
-
-  function clearCurrentPost() {
-    localStorage.removeItem('currentPost');
-
-  }
-
   function storeCurrentToken(token) {
     localStorage.setItem('currentToken', JSON.stringify(token));
   }
@@ -41,7 +27,11 @@
   }
 
   module.exports = {
-    storeCurrentPost,
     storeCurrentToken,
     getCurrentToken,
+    clearCurrentToken,
+    storeCurrentUser,
+    getCurrentUser,
+    clearCurrentUser,
+    
   }

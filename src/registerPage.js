@@ -1,43 +1,62 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { storeCurrentUser, storeCurrentToken, clearCurrentToken, getCurrentToken, clearCurrentUser } from './auth';
 
 
 
-const RegUser = () => {
+const Register = (props) => {
+
   const [newUser, setNewUser] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  let [apiSuccess, setApiSuccess] = useState("");
 
+  const setToken = props.setToken;
+  const token = props.token;
+  const currentUser = props.currentUser;
+  const setCurrentUser = props.setCurrentUser;
+  
   const handleSubmit = async (event) => {
 
     const path = process.env.REACT_APP_BASE_URL;
-    event.preventDefault();
-    console.log("NAME AND PASSWORD", newUser, newPassword);
-    // console.log("registerUser");
-    const response = await fetch("https://localhost:3001/api/users/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: {
-          username: newUser,
-          password: newPassword,
-        },
-      }),
-    });
 
-    const data = await response.json();
-    console.log("data", data);
-    //console.log("data2", data.data.token);
-    //console.log("SUCCESS", data.success);
-    apiSuccess = setApiSuccess(data.success);
-    console.log("apiSuccess", apiSuccess);
-    console.log("apiSuccess datatype", typeof apiSuccess);
-    setNewUser("");
-    setNewPassword("");
+    event.preventDefault();
+
+    if (document.getElementById("password").value !== document.getElementById("confirmpassword").value) {
+      alert("Passwords do not match...try again");
+      document.getElementById("password").value = "";
+      document.getElementById("confirmpassword").value = "";
+      document.getElementById("password").focus();
+    } else {
+         
+      console.log("NAME AND PASSWORD", newUser, newPassword);
+      const response = await fetch("http://localhost:3001/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            username: newUser,
+            password: newPassword,
+          },
+        ),
+      });
+      const data = await response.json();
+   
+      if (data.success) {
+        console.log("data is ", data);
+        alert(data.message + ' ' + data.user.username);
+        setToken(data.token);
+        setCurrentUser(data.user.username);
+        storeCurrentToken(data.token);
+        storeCurrentUser(data.user);
+      } else {
+        alert("error occurred during registration process")
+      }
+    }
   };
+
+
   return (
     <div>
       <div>
@@ -54,33 +73,37 @@ const RegUser = () => {
         NAME
         <input
           type="text"
-          value={newUser}
+          placeholder="Enter username"
           onChange={(event) => {
             setNewUser(event.target.value);
-            console.log(event.target.value);
+            console.log("New user set to ", event.target.value);
           }}
         ></input>
         PASSWORD
         <input
+          id="password"
           type="password"
-          value={newPassword}
+          placeholder="Enter password"
           onChange={(event) => {
             setNewPassword(event.target.value);
             console.log(event.target.value);
           }}
         ></input>
+        CONFIRM PASSWORD
+        <input
+          id="confirmpassword"
+          type="password"
+          placeholder="Confirm password"
+          //onChange={(event) => {
+          //  setNewPassword(event.target.value);
+           // console.log(event.target.value);
+          //}}
+          ></input>
         <button type="text">Register</button>
-        <h4>{apiSuccess}</h4>
-        {apiSuccess === false ? (
-          <h3>User name already exists!</h3>
-        ) : apiSuccess === true ? (
-          <h3>You have successfully registered. Please Login</h3>
-        ) : (
-          ""
-        )}
+        
       </form>
     </div>
   );
 };
 
-export default RegUser;
+export default Register;
