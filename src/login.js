@@ -29,6 +29,8 @@ const Login = (props) => {
 
   const handleUserLogin = async () => {
 
+    console.log("User name and password are ", document.getElementById("username").value, document.getElementById("password").value);
+
     const response = await fetch("http://localhost:3001/api/users/login", {
         method: "POST",
         headers: {
@@ -46,8 +48,8 @@ const Login = (props) => {
     console.log("Data is ", data);
     
     if (!data.success) {
-        alert(data.error.message);
-        bError = true;
+        alert(data.message);
+        //bError = true;
         document.getElementById("username").value = "";
         document.getElementById("password").value = "";
         document.getElementById("username").focus();
@@ -66,8 +68,8 @@ const Login = (props) => {
 
 const saveUsername = () => {
 
-  console.log("Inside save username");
   UserName = document.getElementById("username").value;
+  console.log("Inside save username", UserName);
 
 }
 
