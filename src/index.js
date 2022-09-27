@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./notLoggedinDashboard";
 import LogoutButton from "./logoutButton";
 import RegUser from "./registerPage";
+import LoggedInDashboard from "./loggedInDashboard";
 
 const App = () => {
   console.log("hello from index.js");
@@ -27,6 +28,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Dashboard />}></Route>
           <Route path="/" element={<RegUser />}></Route>
+          <Route path="/dashboard" element={<LoggedInDashboard/>}></Route>
 
 
         </Routes>

@@ -13,6 +13,8 @@ const LoggedInDashboard = () => {
             Activities
           </Link>
         </nav>
+        <LogoutButton/>
+
         <div className="logout2">
         </div>
         <div>
@@ -21,7 +23,6 @@ const LoggedInDashboard = () => {
 
       <h1>Welcome</h1>
       <div>
-        <LogoutButton/>
       </div>
       <div></div>
     </div>
