@@ -109,14 +109,15 @@ async function getAllPublicRoutines() {
 //fields in the routine_activity item.
 async function getRoutineByActivityId(id) {
 
+  console.log("Inside getRoutineByActivityid and id is ", id);
   try {
     const { rows } = await client.query(`
     SELECT *
     FROM routines
     INNER JOIN routine_activities
-      ON routine_activities."routineActivityId"=${id}
+      ON routine_activities."routineActivityId"=$1
     WHERE routines.id=routine_activities."routineId";
-    `);
+    `, [id]);
 
     return rows;
   } catch (error) {
@@ -199,6 +200,9 @@ async function destroyRoutine(id) {
   //with the routine itself. Like the situation involving dropping tables in seedData.
   destroyRoutineActivity(id);
 
+  //Save it off before we delete it so we can return the correct info.
+  const deletedRoutine = await getRoutineById(id);
+
   try {
     const { rows: routine } = await client.query(`
     DELETE 
@@ -206,8 +210,8 @@ async function destroyRoutine(id) {
     WHERE id=$1;
     `, [id]);
 
-    routine.success = true;
-    return routine;
+    deletedRoutine.success = true;
+    return deletedRoutine;
   } catch (error) {
     throw error;
   }

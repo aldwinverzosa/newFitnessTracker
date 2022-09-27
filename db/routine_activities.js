@@ -38,7 +38,7 @@ async function addActivityToRoutine(routineActivity) {
 async function getRoutineActivitiesByRoutine({id}) {
 }
 
-async function updateRoutineActivity (id, fields = {}) {
+async function updateRoutineActivity(id, fields = {}) {
 
   console.log("Inside updateRoutineActivity");
   // build the set string
@@ -58,7 +58,7 @@ async function updateRoutineActivity (id, fields = {}) {
     `, Object.values(fields));
     }
 
-    return getRoutineActivityById(id);
+    return (await getRoutineActivityById(id));
   } catch (error) {
     throw error;
   }
@@ -67,16 +67,18 @@ async function updateRoutineActivity (id, fields = {}) {
 
 async function destroyRoutineActivity(id) {
 
-  console.log("Inside destroy routine activities");
+  console.log("Inside destroy routine activity", id);
+
   try {
-    const { rows } = await client.query(`
+    const { rows: routine_activity } = await client.query(`
     DELETE
     FROM routine_activities
-    WHERE "routineId"=$1;
+    WHERE routine_activities."routineActivityId"=$1;
     `, [id]);
 
-    //WE shouldn't need to return anything here; just delete the routine_activities
-    //return rows;
+    console.log("Am I getting past the DELETE call?");
+    routine_activity.success = true;
+    return routine_activity;
   } catch (error) {
     throw error;
   }

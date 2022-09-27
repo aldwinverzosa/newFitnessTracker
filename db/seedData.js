@@ -58,7 +58,9 @@ async function createTables() {
       "routineActivityId" INTEGER REFERENCES activities(id),
       "routineId" INTEGER REFERENCES routines(id),
       duration INTEGER NOT NULL,
-      count INTEGER NOT NULL);
+      count INTEGER NOT NULL,
+      CONSTRAINT UC_routine_activities UNIQUE ("routineActivityId", "routineId")
+      );
     `);
 
 
