@@ -11,8 +11,8 @@ const RegUser = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("NAME AND PASSWORD", newUser, newPassword);
-    // console.log("registerUser");
-    const response = await fetch(`${strangerThings}/${cohort}/users/register`, {
+    console.log("registerUser");
+    const response = await fetch(`http://localhost:3001/api/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
