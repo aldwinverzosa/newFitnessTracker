@@ -12,7 +12,7 @@ const RegUser = () => {
     event.preventDefault();
     console.log("NAME AND PASSWORD", newUser, newPassword);
     console.log("registerUser");
-    const response = await fetch(`http://localhost:3001/api/userregister`, {
+    const response = await fetch(`http://localhost:3001/api/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
