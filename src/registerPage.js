@@ -58,21 +58,6 @@ const Register = (props) => {
 
   return (
     <div>
-      <div>
-        <nav className="nav">
-  
-          <Link className="navBarLink" to="/login">
-            Login
-          </Link>
-          <Link className="navBarLink" to="/allactivities">
-            Activities
-          </Link>
-          <Link className="navBarLink" to="/allroutines">
-            Routines
-          </Link>
-
-        </nav>
-      </div>
       <h1>Register</h1>
       <form onSubmit={handleSubmit}>
         NAME

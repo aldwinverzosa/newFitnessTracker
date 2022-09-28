@@ -13,6 +13,7 @@ const Login = (props) => {
 
   let UserName = '';
   const path = process.env.REACT_APP_BASE_URL;
+  let navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -57,8 +58,7 @@ const Login = (props) => {
         setCurrentUser(data.user.username);
         storeCurrentUser(data.user);
         storeCurrentToken(data.token);
-        //await setCurrentUserMessages(currentUserMessages);
-        //navigate('./loggedInDashboard');  
+        navigate('/loggedInDashboard');  
      }
 }
 

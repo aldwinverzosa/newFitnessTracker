@@ -32,20 +32,6 @@ const AllRoutines = () => {
 
   return (
     <div>
-      <nav>
-        <Link className="navBarLink" to="/">
-          Register
-        </Link>
-        <Link className="navBarLink" to="/login">
-          Login
-        </Link>
-        <Link className="navBarLink" to="/allactivities">
-          Activities
-        </Link>
-      </nav>
-      <div className="logout2">
-        <LogoutButton />
-      </div>
       <h1>All Routines</h1>
 
       {allRoutines.map((singleItem, i) => {

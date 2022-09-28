@@ -1,5 +1,20 @@
 .nav-list {
     list-style-type: none;
+    color: white;
+}
+
+.navbar a {
+  color: white;
+}
+
+.navbar {
+  background-color: rgb(13, 13, 14);
+  
+  display: flex;
+  justify-content: space-around;
+  height: 75px;
+  align-items: center;
+  font-size: 30px;
 }
 
 .navBarLink {
@@ -7,6 +22,19 @@
     font-family: 'Rubik Dirt', cursive;
     font-size: 40px;
   }
+
+.nav-list,
+.list-item {
+  display: inline-block;
+  padding: 20px 10px;
+}
+
+.list-item {
+  align-items: right;
+  color: white;
+  font-family: 'Rubik Dirt', cursive;
+  font-size: 20px;
+}
   
   .logout {
       display: flex;
