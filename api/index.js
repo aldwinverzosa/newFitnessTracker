@@ -1,12 +1,42 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const router = express.Router();
 const { getUserById } = require('../db');
 
 // GET /api/health
 router.get('/health', async (req, res, next) => {
 
-    console.log("Some inquiring about health of our server back-end");
+    res.send({message: "System is up and running..."});
     
+});
+
+router.use(async (req, res, next) => {
+
+    const prefix = 'Bearer '
+    const auth = req.header('Authorization');
+  
+    if (!auth) {
+      next(); // don't set req.user, no token was passed in
+    } else if (auth.startsWith(prefix)) {
+        const token = auth.slice(prefix.length);
+  
+        try {
+            const { id } = jwt.verify(token, process.env.JWT_SECRET);
+      
+            if (id) {
+              req.user = await getUserById(id);
+              next();
+            }
+        } catch ({ name, message }) {
+            next({ name, message });
+        }
+    } else {
+          next({
+            name: 'AuthorizationHeaderError',
+            message: `Authorization token must start with ${ prefix }`
+          });
+    }
 });
 
 // ROUTER: /api/users

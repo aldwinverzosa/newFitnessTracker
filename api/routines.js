@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST /api/routines
-router.post('/', async (req, res, next) => {
+router.post('/', requireUser, async (req, res, next) => {
 
     const { name, goal, isPublic } = req.body;
    
@@ -59,7 +59,7 @@ router.post('/', async (req, res, next) => {
 // PATCH /api/routines/:routineId
 // This requires a logged in user AND the user logged in must be the owner of the routine
 // PATCH /api/activities/:activityId
-router.patch('/:routineId', async (req, res, next) => {
+router.patch('/:routineId', requireUser, async (req, res, next) => {
 
     const { name, goal, isPublic } = req.body;
     console.log("Inside patch routine and ", name, goal, isPublic, req.params.routineId);
@@ -100,7 +100,7 @@ router.patch('/:routineId', async (req, res, next) => {
 });
 
 // DELETE /api/routines/:routineId
-router.delete('/:routineId', async (req, res, next) => {
+router.delete('/:routineId', requireUser, async (req, res, next) => {
 
     console.log("Inside delete routine:", req.params.routineId);
 

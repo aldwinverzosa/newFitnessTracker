@@ -11,9 +11,6 @@ async function createUser({ username, password }) {
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
   password = hashedPassword;
 
-  //TVM DEBUG : what do we do with the hashed password here?
-  // Does it get put into the db in place of the actual password?
-
   try {
     const { rows: [user] } = await client.query(`
     INSERT INTO users (username, password) VALUES ($1, $2)

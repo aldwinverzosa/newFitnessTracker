@@ -57,17 +57,15 @@ async function attachActivitiesToRoutines(routines) {
   let id = routines.id;
   
   try {
-    const { rows } = await client.query(`
+    const { rows : [activities] } = await client.query(`
     SELECT "routineActivityId", "routineId", duration, count, activities.id, activities.name, activities.description
     FROM routine_activities
     INNER JOIN activities
       ON routine_activities."routineActivityId"=activities.id
     WHERE routine_activities."routineId"=${id};
-    
     `);
 
-
-    return rows;
+    return activities;
   } catch (error) {
     throw error;
   }

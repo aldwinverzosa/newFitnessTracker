@@ -17,12 +17,10 @@ async function getRoutineActivityById(id){
 }
 
 
-//async function addActivityToRoutine(routineId, activityId, count, duration) {
-async function addActivityToRoutine(routineActivity) {
+async function addActivityToRoutine(routineId, activityId, count, duration) {
+//async function addActivityToRoutine(routineActivity) {
   
-  console.log("Inside addActivityToRoutine", routineActivity);
-  const { routineId, activityId, count, duration } = routineActivity;
-   try {
+  try {
     const { rows : [routine] } = await client.query(`
     INSERT INTO routine_activities ("routineId", "routineActivityId", count, duration) VALUES ($1, $2, $3, $4)
     RETURNING *;
@@ -35,7 +33,24 @@ async function addActivityToRoutine(routineActivity) {
  
 }
 
-async function getRoutineActivitiesByRoutine({id}) {
+//Who calls this? Which endpoint would need this information?
+//TVM DEBUG: me to find out
+async function getRoutineActivitiesByRoutine(id) {
+
+  console.log("Inside getRoutineActivitiesByRoutine", id);
+
+  try {
+    const { rows } = await client.query(`
+    SELECT *
+    FROM routine_activities
+    WHERE routine_actvities."routineId"=$1
+    `, [id]);
+
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+
 }
 
 async function updateRoutineActivity(id, fields = {}) {
@@ -76,7 +91,6 @@ async function destroyRoutineActivity(id) {
     WHERE routine_activities."routineActivityId"=$1;
     `, [id]);
 
-    console.log("Am I getting past the DELETE call?");
     routine_activity.success = true;
     return routine_activity;
   } catch (error) {
@@ -88,8 +102,12 @@ async function destroyRoutineActivity(id) {
 
 async function canEditRoutineActivity(routineActivityId, userId) {
 
-  //const routine = getRoutineActivityById(routineActivityId);
-  //if (routine[0].)
+  const routine_activity = await getRoutineActivityById(routineActivityId);
+  if (routine_activity[0].creatorId === userId) {
+    return true;
+  } else {
+    return false;
+  }
 
 }
 

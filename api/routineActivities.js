@@ -1,7 +1,7 @@
 const express = require('express');
 const { de } = require('faker/lib/locales');
 const jwt = require('jsonwebtoken');
-const { updateRoutineActivity, getRoutineByActivityId, destroyRoutineActivity, getRoutineActivityById } = require('../db');
+const { updateRoutineActivity, getRoutineByActivityId, destroyRoutineActivity, getRoutineActivityById, canEditRoutineActivity } = require('../db');
 const router = express.Router();
 
 // PATCH /api/routine_activities/:routineActivityId
@@ -22,9 +22,10 @@ router.patch('/:routineActivityId' , async (req, res, next) => {
         const token = auth.slice(prefix.length); 
         try {
             const { id } = jwt.verify(token, process.env.JWT_SECRET);
-            const routine = await getRoutineByActivityId(req.params.routineActivityId);
-            console.log("routine id and id are", id, routine[0].creatorId);
-            if (id === routine[0].creatorId ) {
+            //const routine = await getRoutineByActivityId(req.params.routineActivityId);
+            //console.log("routine id and id are", id, routine[0].creatorId);
+            if (canEditRoutineActivity(req.params.routineActivityId, id)) {
+            //if (id === routine[0].creatorId ) {
               const updatedRoutineActivity = await updateRoutineActivity(req.params.routineActivityId, {count, duration}); 
               console.log("THE updated Routine activity is", updatedRoutineActivity);
               res.send(updatedRoutineActivity);

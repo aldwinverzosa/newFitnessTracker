@@ -1,5 +1,7 @@
 const express = require('express');
-const { getAllActivities, getPublicRoutinesByActivity, attachActivitiesToRoutines, getActivityById, updateActivity } = require('../db');
+const jwt = require('jsonwebtoken');
+const { requireUser } = require('./utils');
+const { createActivity, getAllActivities, getPublicRoutinesByActivity, attachActivitiesToRoutines, getActivityById, updateActivity } = require('../db');
 const router = express.Router();
 
 // GET /api/activities/:activityId/routines
@@ -25,12 +27,42 @@ router.get('/', async (req, res) => {
     //console.log("Inside GET all activities");
     const activities = await getAllActivities();
     //console.log("activities is ", activities);
-    res.send(activities);
+    res.send({success: true, activities: activities});
 
 });
 
 // POST /api/activities
+router.post('/', requireUser, async (req, res, next) => {
 
+    const { name, description } = req.body;
+
+    const prefix = 'Bearer '
+    const auth = req.header('Authorization');
+
+    if (!auth) {
+        console.log("No Authorization provided");
+    } else if (auth.startsWith(prefix)) {
+          const token = auth.slice(prefix.length);
+          try {
+            const { id } = jwt.verify(token, process.env.JWT_SECRET);
+            //We have a valid logged in user, so continue
+            if (id) {
+              const postData = {};
+              if (name)
+                postData.name = name;
+              if (description)
+                postData.description = description;
+
+              const activity = await createActivity(postData);
+              res.send({success: true, Activity: activity});
+            } 
+        } catch ({ name, message }) {
+        next({ name, message });
+        }
+    } else {
+        next({message: "No token passed in."})
+    }
+});
 
 // PATCH /api/activities/:activityId
 router.patch('/:activityId', async (req, res) => {

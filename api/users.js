@@ -18,7 +18,8 @@ router.use((req, res, next) => {
 router.post('/login', async (req, res, next) => {
 
     const { username, password } = req.body;
-    console.log("password is ", password);
+    console.log("username/password is ", username, password);
+    //console.log("req is ", req);
     
     // request must have both
     if (!username || !password) {
@@ -37,7 +38,7 @@ router.post('/login', async (req, res, next) => {
           // create token & return to user
           const token = jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET);
           req.user = user;
-          res.send({ user: user, message: "you're logged in!", token: token });
+          res.send({ success: true, user: user, message: "you're logged in!", token: token });
         } else {
           next({ 
             name: 'IncorrectCredentialsError', 
@@ -69,7 +70,7 @@ router.post('/register', async (req, res, next) => {
     const user = await createUser({username, password});
     
     const token = jwt.sign({id: user.id, username}, process.env.JWT_SECRET, {expiresIn: '1w'});
-    res.send({user: user, message: "Thank you for signing up", token});
+    res.send({success: true, user: user, message: "Thank you for signing up", token});
   } catch ({ name, message }) {
     next({ name, message})
   }
