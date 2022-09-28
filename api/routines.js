@@ -133,10 +133,12 @@ router.delete('/:routineId', requireUser, async (req, res, next) => {
 router.post('/:routineId/activities', async (req, res, next) => {
 
   const { activityId, count, duration } = req.body;
+  const routineId = req.params.routineId;
+
 
   console.log("Inside post activity to a routine", activityId, count, duration);
   try {
-    const routineActivity = await addActivityToRoutine(req.params.routineId, activityId, count, duration);
+    const routineActivity = await addActivityToRoutine({routineId, activityId, count, duration});
     res.send(routineActivity);
   } catch ({ name, message }) {
     next({ name, message });

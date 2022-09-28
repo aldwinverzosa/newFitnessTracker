@@ -17,8 +17,11 @@ async function getRoutineActivityById(id){
 }
 
 
-async function addActivityToRoutine(routineId, activityId, count, duration) {
-//async function addActivityToRoutine(routineActivity) {
+//async function addActivityToRoutine(routineId, activityId, count, duration) {
+async function addActivityToRoutine(routineActivity) {
+
+ const  { routineId, activityId, count, duration } = routineActivity;
+ console.log("Routine activity is ", routineActivity);
   
   try {
     const { rows : [routine] } = await client.query(`
