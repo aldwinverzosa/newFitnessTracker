@@ -44,8 +44,7 @@ const Register = (props) => {
       const data = await response.json();
    
       if (data.success) {
-        console.log("data is ", data);
-        alert(data.message + ' ' + data.user.username);
+        alert(data.message);
         setToken(data.token);
         setCurrentUser(data.user.username);
         storeCurrentToken(data.token);

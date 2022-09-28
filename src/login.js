@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import LoggedInDashboard from "./loggedInDashboard";
 import { storeCurrentUser, storeCurrentToken, clearCurrentToken, getCurrentToken, clearCurrentUser } from './auth';
 
 
@@ -22,10 +23,6 @@ const Login = (props) => {
     clearCurrentToken();
     clearCurrentUser();
   }
-
-  useEffect(() => {
-    //setToken(token);
-  }, [token]);
 
   const handleUserLogin = async () => {
 
@@ -56,12 +53,12 @@ const Login = (props) => {
     } else {
         //bError = false;
         alert(data.message);
-        //setToken(data.token);
-        //setCurrentUser(data.user.username);
+        setToken(data.token);
+        setCurrentUser(data.user.username);
         storeCurrentUser(data.user);
         storeCurrentToken(data.token);
         //await setCurrentUserMessages(currentUserMessages);
-        //navigate('/posts');  
+        //navigate('./loggedInDashboard');  
      }
 }
 

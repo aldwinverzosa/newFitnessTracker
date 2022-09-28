@@ -1,8 +1,7 @@
 import { createRoot } from "react-dom/client";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Login from "./login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Dashboard from "./notLoggedinDashboard";
 import LogoutButton from "./logoutButton";
 import Register from "./registerPage";
@@ -12,23 +11,28 @@ const App = () => {
 
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
+  
+  useEffect(() => {
+
+    if (currentUser) {
+      console.log("Current user is ", currentUser);
+    }
+  
+  }, [currentUser]); 
 
   return (
     <div>
       <div>
-        <nav>
+        <nav className="navbar">
           <ul className="nav-list">
-            <li className="list-item">
-              <Link to="/login"> </Link>
-            </li>
-            
+            <li className="list-item"><Link to="/login"></Link></li>
           </ul>
         </nav>
         <div>
         </div>
 
         <Routes>
-          <Route path="/login" element={<Dashboard currentUser={currentUser} setCurrentUser={setCurrentUser} setToken={setToken} token={token}/>}></Route>
+          <Route path="/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} setToken={setToken} token={token}/>}></Route>
           <Route path="/register" element={<Register currentUser={currentUser} setCurrentUser={setCurrentUser} token={token} setToken={setToken}/>}></Route>
           <Route path="/dashboard" element={<LoggedInDashboard/>}></Route>
         </Routes>
