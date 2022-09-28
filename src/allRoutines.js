@@ -11,7 +11,7 @@ const AllRoutines = () => {
 
   useEffect(() => {
     const getAllData = async () => {
-      await getallRoutines();
+      await getAllRoutines();
     };
     getAllData();
   }, []);
@@ -28,7 +28,7 @@ const AllRoutines = () => {
     // const routine1_activity_1_DESCRIPTION = routine1_activity1.description;
     // id = element1.id;
   };
-  getAllRoutines();
+//   getAllRoutines();
 
   return (
     <div>

@@ -3,29 +3,37 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./logoutButton";
 import Login from "./login";
-import AllRoutines from "./allRoutines";
 
 const REACT_APP_BASE_URL = "http://localhost:3001/api/";
 
 const AllActivities = () => {
-  const [allRoutines, setallRoutines] = useState([]);
+  const [activities, setAllActivities] = useState([]);
 
   useEffect(() => {
     const getAllData = async () => {
-      await getallRoutines();
+      await getAllActivities();
     };
     getAllData();
   }, []);
 
-  const getAllRoutines = async () => {
-    const response = await fetch(`http://localhost:3001/api/routines`);
+  const getAllActivities = async () => {
+    const response = await fetch(`http://localhost:3001/api/activities`);
     const data = await response.json();
     console.log("DATA", data);
-    setallRoutines(data)
+    // console.log("ACTIVITY", data.activities);
 
+    // console.log("activity name", data.activities[0].name);
+    const data2 = data.activities
+    console.log('data2', data2)
+    setAllActivities(data2)
 
+    // const routine1_activity1_description = data[0].Activity[0].description;
+    // const routine1 = data[0];
+    // const routine1_activity1 = routine1.Activity[0];
+    // const routine1_activity_1_DESCRIPTION = routine1_activity1.description;
+    // id = element1.id;
   };
-  getAllRoutines();
+//   getAllActivities();
 
   return (
     <div>
@@ -45,11 +53,14 @@ const AllActivities = () => {
       </div>
       <h1>All Activities</h1>
 
-      {allRoutines.map((singleItem, i) => {
+      {activities.map((singleItem, i) => {
         return (
           <div className="card" key={i}>
-            <h2 className="postName">{singleItem.Activity[i].name}</h2>
-            <h2 className="postName">Description: {singleItem.Activity[i].description}</h2>
+            <h2 className="postName">NAME: {singleItem.name}</h2>
+            <h2 className="postName">DESCRIPTION: {singleItem.description}</h2>
+            <h2 className="postName">ID: {singleItem.id}</h2>
+
+
           </div>
         );
       })}

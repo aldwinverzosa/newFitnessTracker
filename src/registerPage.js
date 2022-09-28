@@ -64,6 +64,12 @@ const Register = (props) => {
           <Link className="navBarLink" to="/login">
             Login
           </Link>
+          <Link className="navBarLink" to="/allactivities">
+            Activities
+          </Link>
+          <Link className="navBarLink" to="/allroutines">
+            Routines
+          </Link>
 
         </nav>
       </div>
