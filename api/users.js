@@ -29,8 +29,10 @@ router.post('/login', async (req, res, next) => {
       });
     }
 
+    const user = await getUserByUsername(username);
+    if( user ) {
     try {
-        const user = await getUserByUsername(username);
+        
         const hashedPassword = user.password;
         const isValid = await bcrypt.compare(password, hashedPassword);
 
@@ -49,6 +51,12 @@ router.post('/login', async (req, res, next) => {
         console.log(error);
         next(error);
       }
+    } else {
+      next({ 
+        name: 'NoSuchUserError', 
+        message: 'There is no user by that name. Please register'
+      });
+    }
     });  
 
 
