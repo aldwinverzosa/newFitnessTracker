@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./logoutButton";
 import Login from "./login";
+import AllRoutines from "./allRoutines";
 
 const REACT_APP_BASE_URL = "http://localhost:3001/api/";
 
@@ -34,6 +35,9 @@ const AllActivities = () => {
         </Link>
         <Link className="navBarLink" to="/login">
           Login
+        </Link>
+        <Link className="navBarLink" to="/allroutines">
+          Routines
         </Link>
       </nav>
       <div className="logout2">

@@ -39,11 +39,14 @@ const AllRoutines = () => {
         <Link className="navBarLink" to="/login">
           Login
         </Link>
+        <Link className="navBarLink" to="/allactivities">
+          Activities
+        </Link>
       </nav>
       <div className="logout2">
         <LogoutButton />
       </div>
-      <h1>All Postings</h1>
+      <h1>All Routines</h1>
 
       {allRoutines.map((singleItem, i) => {
         return (
