@@ -6,10 +6,10 @@ const Dashboard = () => {
     <div>
       <div>
         <nav>
-          <Link className="navBarLink" to="/routines">
+          <Link className="navBarLink" to="/allroutines">
             Routines
           </Link>
-          <Link className="navBarLink" to="/activities">
+          <Link className="navBarLink" to="/allactivities">
             Activities
           </Link>
         </nav>
