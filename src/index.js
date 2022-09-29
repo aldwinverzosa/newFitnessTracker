@@ -9,6 +9,7 @@ import LoggedInDashboard from "./loggedInDashboard";
 import AllRoutines from "./allRoutines";
 import AllActivities from "./allActivities";
 import EditActivity from "./editActivity";
+import MyProfile from "./myRoutines";
 
 const App = () => {
 
@@ -48,7 +49,7 @@ const App = () => {
             <li className="list-item"><Link to="/loggedinDashboard"></Link></li>
             <li className="list-item"><Link to="/allroutines">Routines</Link></li>
             <li className="list-item"><Link to="/allactivities">Activities</Link></li>
-            <li className="list-item"><Link to="/login">My Routines</Link></li>
+            <li className="list-item"><Link to="/myRoutines">My Routines</Link></li>
             <li className="list-item"><Link to="/register">Register</Link></li>
             <li className="list-item" onClick={logOutUser}><Link to="/login">{logInStr}</Link></li>
           </ul>
@@ -65,6 +66,8 @@ const App = () => {
           <Route path="/allroutines" element={<AllRoutines/>}></Route>
           <Route path="/loggedinDashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/editActivity" element={<EditActivity />}></Route>
+          <Route path="/myRoutines" element={<MyProfile />}></Route>
+
         </Routes>
       </div>
 
