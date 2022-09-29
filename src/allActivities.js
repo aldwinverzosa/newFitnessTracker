@@ -1,13 +1,17 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import LogoutButton from "./logoutButton";
 import Login from "./login";
+import { storeCurrentActivity } from "./auth";
 
-const REACT_APP_BASE_URL = "http://localhost:3001/api/";
+
+
 
 const AllActivities = () => {
   const [activities, setAllActivities] = useState([]);
+  const path = process.env.REACT_APP_BASE_URL;
+  let navigate = useNavigate();
 
   useEffect(() => {
     const getAllData = async () => {
@@ -15,6 +19,13 @@ const AllActivities = () => {
     };
     getAllData();
   }, []);
+
+  const editActivity = async (activity) => {
+
+    storeCurrentActivity(activity);
+    await navigate("/editActivity");
+  
+  }
 
   const getAllActivities = async () => {
     const response = await fetch(`http://localhost:3001/api/activities`);
@@ -35,6 +46,7 @@ const AllActivities = () => {
   };
 //   getAllActivities();
 
+
   return (
     <div>
       <h1>All Activities</h1>
@@ -45,8 +57,7 @@ const AllActivities = () => {
             <h2 className="postName">NAME: {singleItem.name}</h2>
             <h2 className="postName">DESCRIPTION: {singleItem.description}</h2>
             <h2 className="postName">ID: {singleItem.id}</h2>
-
-
+            <button onClick={() => editActivity(singleItem)}>Edit</button>
           </div>
         );
       })}

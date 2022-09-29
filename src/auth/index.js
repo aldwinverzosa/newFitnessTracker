@@ -26,6 +26,20 @@
 
   }
 
+  function storeCurrentActivity(activity) {
+    localStorage.setItem('currentActivity', JSON.stringify(activity));
+  }
+
+  function getCurrentActivity() {
+    const activity = JSON.parse(localStorage.getItem('currentActivity'));
+    return activity;
+  }
+
+  function clearCurrentActivity() {
+    localStorage.removeItem('currentActivity');
+
+  }
+
   module.exports = {
     storeCurrentToken,
     getCurrentToken,
@@ -33,5 +47,8 @@
     storeCurrentUser,
     getCurrentUser,
     clearCurrentUser,
+    storeCurrentActivity,
+    getCurrentActivity,
+    clearCurrentActivity,
     
   }

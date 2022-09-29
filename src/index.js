@@ -8,6 +8,7 @@ import Register from "./registerPage";
 import LoggedInDashboard from "./loggedInDashboard";
 import AllRoutines from "./allRoutines";
 import AllActivities from "./allActivities";
+import EditActivity from "./editActivity";
 
 const App = () => {
 
@@ -63,6 +64,7 @@ const App = () => {
           <Route path="/allactivities" element={<AllActivities/>}></Route>
           <Route path="/allroutines" element={<AllRoutines/>}></Route>
           <Route path="/loggedinDashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
+          <Route path="/editActivity" element={<EditActivity />}></Route>
         </Routes>
       </div>
 
