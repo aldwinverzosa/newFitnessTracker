@@ -41,7 +41,8 @@ async function getAllRoutines() {
     const { rows } = await client.query(`
     SELECT * 
     FROM routines
-    WHERE "isPublic"=true;
+    WHERE "isPublic"=true
+    ORDER BY id;
     `);
 
     return rows;

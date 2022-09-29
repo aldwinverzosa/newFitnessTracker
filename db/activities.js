@@ -6,7 +6,8 @@ async function getAllActivities() {
   try {
     const { rows } = await client.query(`
     SELECT *
-    FROM activities;
+    FROM activities
+    ORDER BY id;
     `);
 
     return rows;
