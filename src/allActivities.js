@@ -44,12 +44,19 @@ const AllActivities = () => {
     // const routine1_activity_1_DESCRIPTION = routine1_activity1.description;
     // id = element1.id;
   };
-//   getAllActivities();
+
+  const createActivity = async () => {
+
+    console.log("Inside create activity");
+    await navigate('/createActivity');
+
+  }
 
 
   return (
     <div>
       <h1>All Activities</h1>
+      <button id="addactivity" onClick={createActivity}>Add an Activity</button>
 
       {activities.map((singleItem, i) => {
         return (

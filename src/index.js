@@ -10,6 +10,7 @@ import AllRoutines from "./allRoutines";
 import AllActivities from "./allActivities";
 import EditActivity from "./editActivity";
 import MyProfile from "./myRoutines";
+import CreateActivity from "./createActivity";
 
 const App = () => {
 
@@ -67,6 +68,7 @@ const App = () => {
           <Route path="/loggedinDashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/editActivity" element={<EditActivity />}></Route>
           <Route path="/myRoutines" element={<MyProfile />}></Route>
+          <Route path="/createActivity" element={<CreateActivity currentUser={currentUser}/>}></Route>
 
         </Routes>
       </div>
