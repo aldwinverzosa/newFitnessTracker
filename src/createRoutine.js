@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getCurrentToken, getCurrentUser } from "./auth";
 
-
+//DELETE /api/routines/:routineId (**)
 const path = process.env.REACT_APP_BASE_URL;
 
 const CreateRoutine = () => {
@@ -30,8 +30,8 @@ const CreateRoutine = () => {
 
       body: JSON.stringify({
          
-          name: {name},
-          goal: {goal},
+          name,
+          goal, 
         
       }),
     });
