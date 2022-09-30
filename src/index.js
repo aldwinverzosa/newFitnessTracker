@@ -11,6 +11,7 @@ import AllActivities from "./allActivities";
 import EditActivity from "./editActivity";
 import MyProfile from "./myRoutines";
 import CreateActivity from "./createActivity";
+import { clearCurrentToken, clearCurrentUser } from "./auth";
 
 const App = () => {
 
@@ -39,6 +40,8 @@ const App = () => {
     if (currentUser && logInStr === "Log Out") {
       setCurrentUser(null);
       setToken(null);
+      clearCurrentUser();
+      clearCurrentToken();
     }
 }
 
