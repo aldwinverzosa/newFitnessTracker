@@ -61,7 +61,7 @@ async function attachActivitiesToRoutines(routines) {
   try {
     const { rows: activities } = await client.query(
       `
-      SELECT activities.*, routine_activities.duration, routine_activities.count, routine_activities.id AS "routineActivityId", routine_activities."routineId"
+      SELECT activities.*, routine_activities.duration, routine_activities.count, routine_activities."routineActivityId", routine_activities."routineId"
       FROM activities 
       JOIN routine_activities ON routine_activities."routineActivityId" = activities.id
       WHERE routine_activities."routineId" IN (${routineIds});
@@ -79,27 +79,6 @@ async function attachActivitiesToRoutines(routines) {
     throw error;
   }
 }
-
-/*async function attachActivitiesToRoutines(routines) {
-
-  console.log("Inside attach activities to routines and routine is", routines);
-  let id = routines.id;
-  
-  try {
-    const { rows : [activities] } = await client.query(`
-    SELECT "routineActivityId", "routineId", duration, count, activities.id, activities.name, activities.description
-    FROM routine_activities
-    INNER JOIN activities
-      ON routine_activities."routineActivityId"=activities.id
-    WHERE routine_activities."routineId"=${id};
-    `);
-
-    return activities;
-  } catch (error) {
-    throw error;
-  }
-
-}*/
 
 // return the new activity
 async function createActivity({ name, description }) {
