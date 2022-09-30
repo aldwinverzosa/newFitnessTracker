@@ -59,20 +59,22 @@ router.delete('/:routineActivityId' , async (req, res, next) => {
             //There could be situations where the Activity ID is being used by more than
             //one user on a particular routine. We need to filter the one we own.
             const { id } = jwt.verify(token, process.env.JWT_SECRET);
-            console.log("After id from verify it is ", id);
-            let routine = await getRoutineByActivityId(req.params.routineActivityId);
-            console.log("Routine is ", routine);
-            if (routine.length >= 1) {
+            
+            const routine = await getRoutineByActivityId(req.params.routineActivityId);
+            
+            if (routine.length) {
                 myRoutine = routine.filter(rtn => rtn.creatorId === id);
-            } 
-            if (myRoutine) {
-                const deletedRoutineActivity = await destroyRoutineActivity(req.params.routineActivityId);
-                routine[0].success = true;
-                console.log("The deleted Routine activity is", routine);
-                delete routine[0].creatorId; delete routine[0].creatorName;
-                res.send(myRoutine);
             } else {
-              res.send({success: false, message: "You are not the owner of this routine."});
+                return({success: false, message: "None of your routines are using this activity."});
+            }
+            
+            if (myRoutine.length) {
+                const deletedRoutineActivity = await destroyRoutineActivity(req.params.routineActivityId);
+                myRoutine[0].success = true;
+                delete myRoutine[0].creatorId; delete myRoutine[0].creatorName;
+                res.send({success: true, message: "Routine(s) removed."});
+            } else {
+              next({success: false, message: "You are not the owner of this routine."});
             }
         } catch ({ name, message }) {
             next({ name, message });

@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import LogoutButton from "./logoutButton";
 import Login from "./login";
 import { getCurrentToken } from "./auth";
@@ -9,6 +9,8 @@ const path = process.env.REACT_APP_BASE_URL;
 
 const AllRoutines = () => {
   const [allRoutines, setallRoutines] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAllData = async () => {
@@ -47,12 +49,13 @@ const AllRoutines = () => {
         });
         const data = await response.json();
         if (data.success) {
-            await getAllRoutines();
-        } else if (data) {
-            alert(data.message);
+          //refresh allroutines and navigate back to allRoutines
+          await getAllRoutines();
+          navigate('/allroutines');
+        } else {
+          alert(data.message);
         }
-
-    }
+     }
   }
 
   return (
