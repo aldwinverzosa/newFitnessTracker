@@ -10,8 +10,8 @@ import AllRoutines from "./allRoutines";
 import AllActivities from "./allActivities";
 import EditActivity from "./editActivity";
 import MyProfile from "./myRoutines";
-import CreateActivity from "./createActivity";
 import { clearCurrentToken, clearCurrentUser } from "./auth";
+import CreateRoutine from './createRoutine';
 
 const App = () => {
 
@@ -54,6 +54,9 @@ const App = () => {
             <li className="list-item"><Link to="/allroutines">Routines</Link></li>
             <li className="list-item"><Link to="/allactivities">Activities</Link></li>
             <li className="list-item"><Link to="/myRoutines">My Routines</Link></li>
+            <li className="list-item"><Link to="/createroutine">Create Routine</Link></li> 
+
+
             <li className="list-item"><Link to="/register">Register</Link></li>
             <li className="list-item" onClick={logOutUser}><Link to="/login">{logInStr}</Link></li>
           </ul>
@@ -71,7 +74,11 @@ const App = () => {
           <Route path="/loggedinDashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/editActivity" element={<EditActivity />}></Route>
           <Route path="/myRoutines" element={<MyProfile />}></Route>
-          <Route path="/createActivity" element={<CreateActivity currentUser={currentUser}/>}></Route>
+          <Route path="/createroutine" element={<CreateRoutine currentUser={currentUser}/>}></Route>
+
+
+
+
 
         </Routes>
       </div>

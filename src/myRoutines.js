@@ -35,6 +35,9 @@ const MyProfile = () => {
     console.log("DATA", data[0].name);
     console.log("DATA", data.isPublic);
 
+
+
+     
     
     // const result3 = data.isPublic.filter(
     //     (post) => post.isPublic === false
