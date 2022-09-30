@@ -20,12 +20,12 @@ async function getRoutineActivityById(id){
 //async function addActivityToRoutine(routineId, activityId, count, duration) {
 async function addActivityToRoutine(routineActivity) {
 
- const  { routineId, activityId, count, duration } = routineActivity;
- console.log("Routine activity is ", routineActivity);
+ const  { activityId, routineId, duration, count } = routineActivity;
+ console.log("inside addActivityToRoutine and Routine activity is ", routineActivity);
   
   try {
     const { rows : [routine] } = await client.query(`
-    INSERT INTO routine_activities ("routineId", "routineActivityId", count, duration) VALUES ($1, $2, $3, $4)
+    INSERT INTO routine_activities ("routineId", "routineActivityId", duration, count) VALUES ($1, $2, $3, $4)
     RETURNING *;
     `, [routineId, activityId, count, duration]);
 

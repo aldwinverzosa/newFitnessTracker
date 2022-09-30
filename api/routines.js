@@ -138,7 +138,7 @@ router.post('/:routineId/activities', async (req, res, next) => {
 
   console.log("Inside post activity to a routine", activityId, count, duration);
   try {
-    const routineActivity = await addActivityToRoutine({routineId, activityId, count, duration});
+    const routineActivity = await addActivityToRoutine({activityId, routineId, duration, count});
     res.send(routineActivity);
   } catch ({ name, message }) {
     next({ name, message });

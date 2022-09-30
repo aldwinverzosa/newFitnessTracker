@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import LogoutButton from "./logoutButton";
 import Login from "./login";
+import { getCurrentToken } from "./auth";
 
-const REACT_APP_BASE_URL = "http://localhost:3001/api/";
+const path = process.env.REACT_APP_BASE_URL;
 
 const AllRoutines = () => {
   const [allRoutines, setallRoutines] = useState([]);
@@ -28,7 +29,31 @@ const AllRoutines = () => {
     // const routine1_activity_1_DESCRIPTION = routine1_activity1.description;
     // id = element1.id;
   };
-  //   getAllRoutines();
+  
+  const removeActivity = async (id) => {
+
+    console.log("Inside remove activity from routine", id);
+
+    const token = getCurrentToken();
+    if (!token) {
+      alert("Invalid or no token supplied. Please login or register.")
+    } else {
+      const response = await fetch(`${path}/routine_activities/${id}`, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+          },
+        });
+        const data = await response.json();
+        if (data.success) {
+            await getAllRoutines();
+        } else if (data) {
+            alert(data.message);
+        }
+
+    }
+  }
 
   return (
     <div>
@@ -50,6 +75,8 @@ const AllRoutines = () => {
                   <h3>Activity Description: {activity.description}</h3>
                   <h3>Activity Duration: {activity.duration}</h3>
                   <h3>Activity Count: {activity.count}</h3>
+                  <h3>Routine Activity ID: {activity.routineActivityId}</h3>
+                  <button onClick={() => removeActivity(activity.routineActivityId)}>Remove Activity</button>
                   <hr></hr>
                   </>
                 )

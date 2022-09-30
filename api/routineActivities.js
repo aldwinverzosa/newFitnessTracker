@@ -43,6 +43,7 @@ router.patch('/:routineActivityId' , async (req, res, next) => {
 router.delete('/:routineActivityId' , async (req, res, next) => {
 
     console.log("Inside delete routine activity", req.params.routineActivityId);
+    let myRoutine;
        
     //Now we need to see if the user logged in is the owner of this routine
     //TODO: Perform the check in this routine to make sure the logged in user is the owner 
@@ -58,19 +59,20 @@ router.delete('/:routineActivityId' , async (req, res, next) => {
             //There could be situations where the Activity ID is being used by more than
             //one user on a particular routine. We need to filter the one we own.
             const { id } = jwt.verify(token, process.env.JWT_SECRET);
+            console.log("After id from verify it is ", id);
             let routine = await getRoutineByActivityId(req.params.routineActivityId);
-            if (routine.length > 1) {
-                routine = routine.filter(rtn => rtn.creatorId === id);
-            }
-            console.log("routine we want is", routine);
-            if (id === routine[0].creatorId ) {
-              const deletedRoutineActivity = await destroyRoutineActivity(req.params.routineActivityId);
-              routine[0].success = true;
-              console.log("The deleted Routine activity is", routine);
-              delete routine[0].creatorId; delete routine[0].creatorName;
-              res.send(routine);
+            console.log("Routine is ", routine);
+            if (routine.length >= 1) {
+                myRoutine = routine.filter(rtn => rtn.creatorId === id);
+            } 
+            if (myRoutine) {
+                const deletedRoutineActivity = await destroyRoutineActivity(req.params.routineActivityId);
+                routine[0].success = true;
+                console.log("The deleted Routine activity is", routine);
+                delete routine[0].creatorId; delete routine[0].creatorName;
+                res.send(myRoutine);
             } else {
-              next({message: "You are not the owner of this routine."});
+              res.send({success: false, message: "You are not the owner of this routine."});
             }
         } catch ({ name, message }) {
             next({ name, message });
