@@ -54,6 +54,34 @@ async function getActivityByName(name) {
 // This must be where we need to output the array of activities on the routines
 async function attachActivitiesToRoutines(routines) {
 
+  console.log("1. Inside attachActivitiesToRoutines and routines is", routines);
+
+  const routineIds = routines.map((routine) => routine.id).join(",");
+
+  try {
+    const { rows: activities } = await client.query(
+      `
+      SELECT activities.*, routine_activities.duration, routine_activities.count, routine_activities.id AS "routineActivityId", routine_activities."routineId"
+      FROM activities 
+      JOIN routine_activities ON routine_activities."routineActivityId" = activities.id
+      WHERE routine_activities."routineId" IN (${routineIds});
+    `
+    );
+
+    for (const routine of routines) {
+      const addActivities = activities.filter(
+        (activity) => activity.routineId === routine.id
+      );
+      routine.activities = addActivities;
+    }
+    return routines;
+  } catch (error) {
+    throw error;
+  }
+}
+
+/*async function attachActivitiesToRoutines(routines) {
+
   console.log("Inside attach activities to routines and routine is", routines);
   let id = routines.id;
   
@@ -71,7 +99,7 @@ async function attachActivitiesToRoutines(routines) {
     throw error;
   }
 
-}
+}*/
 
 // return the new activity
 async function createActivity({ name, description }) {

@@ -11,12 +11,12 @@ const { reset } = require('nodemon');
 // GET /api/routines
 router.get('/', async (req, res) => {
 
-    const routines = await getAllRoutines();
-
+  const routines = await getAllRoutines();
+/*
     for (let i = 0; i < routines.length; i++) {
         let activitiesArr = await attachActivitiesToRoutines(routines[i]);
-        routines[i].Activity = activitiesArr;
-    }
+        routines[i].Activity.push(activitiesArr);
+    }*/
     res.send(routines);
 
 });

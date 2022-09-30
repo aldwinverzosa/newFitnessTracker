@@ -11,7 +11,7 @@ const EditActivity = (props) => {
     
     const path = process.env.REACT_APP_BASE_URL;
     const token = getCurrentToken();
-    
+     
                 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -20,11 +20,13 @@ const EditActivity = (props) => {
     const handleCreateActivity = async () => {
 
         console.log("Inside create activity and user is", currentUser);
-        
+        if (!token) {
+            alert("Please login or register to create an activity");
+        } else {
 
-        const response = await fetch(`${path}/activities/`, {
-          method: "POST",
-          headers: {
+            const response = await fetch(`${path}/activities/`, {
+            method: "POST",
+            headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
               },
@@ -34,12 +36,17 @@ const EditActivity = (props) => {
                       description: document.getElementById("description").value
              
               })
-        });
-        const data = await response.json();
-        console.log('data', data);
-        await getAllActivities();
-        //navigate('/allActivities');
-        window.location.href = "/allActivities";
+            });
+            const data = await response.json();
+            if (data.success) {
+                console.log('data', data);
+                await getAllActivities();
+            } else {
+                console.log(data.message);
+                alert(data.message);
+            }
+        }
+        navigate('/allActivities');
     }
    
     

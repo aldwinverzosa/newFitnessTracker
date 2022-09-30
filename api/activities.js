@@ -55,7 +55,9 @@ router.post('/', requireUser, async (req, res, next) => {
 
               const activity = await createActivity(postData);
               res.send({success: true, Activity: activity});
-            } 
+            } else {
+              res.send({success: false, message: "No user token passed in."})
+            }
         } catch ({ name, message }) {
         next({ name, message });
         }

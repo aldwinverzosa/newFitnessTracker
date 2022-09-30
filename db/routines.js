@@ -35,51 +35,52 @@ async function getRoutinesWithoutActivities(){
 }
 
 async function getAllRoutines() {
-
-  console.log("Gettting all public routines");
   try {
-    const { rows } = await client.query(`
-    SELECT * 
+    const { rows: routines } = await client.query(`
+    SELECT routines.*, users.username AS "creatorName"
     FROM routines
-    WHERE "isPublic"=true
-    ORDER BY id;
+    JOIN users ON routines."creatorId" = users.id 
     `);
-
-    return rows;
+    console.log("About to call attachActivitiesToRoutines from getAllRoutines and routines is ", routines);
+    return attachActivitiesToRoutines(routines);
   } catch (error) {
     throw error;
   }
-
 }
 
 async function getAllRoutinesByUser(username) {
 
-  console.log("Gettting all routines by user ", username);
+  console.log("Getting all routines by user ", username);
+
   try {
-    const { rows } = await client.query(`
+    const { rows: routines } = await client.query(`
     SELECT * 
     FROM routines
     WHERE "creatorName"=$1;
    `, [username]);
 
-    return rows;
+   console.log("About to call attach from getAllRoutinesByUser and user routines are ", routines);
+    const userRoutines = await attachActivitiesToRoutines(routines);
+    return userRoutines;
   } catch (error) {
     throw error;
   }
 
+  
 }
 
 async function getPublicRoutinesByUser(username) {
 
   console.log("Getting all public routines by user ", username);
   try {
-    const { rows } = await client.query(`
+    const { rows: routines } = await client.query(`
     SELECT * 
     FROM routines
     WHERE "creatorName"=$1 AND "isPublic"=true;
    `, [username]);
 
-    return rows;
+    const userRoutines = await attachActivitiesToRoutines(routines);
+    return userRoutines;
   } catch (error) {
     throw error;
   }

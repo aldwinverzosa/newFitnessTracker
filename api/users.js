@@ -145,15 +145,15 @@ router.get('/:username/routines', async (req, res) => {
           //If the logged in user is making the request with their own username then send both public and private
           if (req.user.username === req.params.username) {
             const allRoutines = await getAllRoutinesByUser(req.params.username);
-            activitiesArr = await Promise.all(allRoutines.map(attachActivitiesToRoutines));
-            allRoutines.activity = activitiesArr;
+            //activitiesArr = await Promise.all(allRoutines.map(attachActivitiesToRoutines));
+            //allRoutines.activity = activitiesArr;
             res.send(allRoutines);
           }
         }
       } else {
         const publicRoutines = await getPublicRoutinesByUser(req.params.username);
-        activitiesArr = await Promise.all(publicRoutines.map(attachActivitiesToRoutines));
-        publicRoutines.activity = activitiesArr;
+        //activitiesArr = await Promise.all(publicRoutines.map(attachActivitiesToRoutines));
+        //publicRoutines.activity = activitiesArr;
         console.log("After attachment Public routines are ", publicRoutines);
         res.send(publicRoutines);
       }

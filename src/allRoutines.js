@@ -40,6 +40,23 @@ const AllRoutines = () => {
             <h2 className="postName">NAME: {singleItem.creatorName}</h2>
             <h2 className="postName">NAME: {singleItem.name}</h2>
             <h2 className="postName">Goal: {singleItem.goal}</h2>
+            <hr></hr>
+            {
+              singleItem.activities.length ?
+              singleItem.activities.map((activity, index) => {
+                return (
+                  <>
+                  <h3>Activity Name: {activity.name}</h3>
+                  <h3>Activity Description: {activity.description}</h3>
+                  <h3>Activity Duration: {activity.duration}</h3>
+                  <h3>Activity Count: {activity.count}</h3>
+                  <hr></hr>
+                  </>
+                )
+              })
+              :
+              <></>
+            }
           </div>
         );
       })}
