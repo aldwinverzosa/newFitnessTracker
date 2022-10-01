@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
-import { getCurrentToken, getCurrentUser } from "./auth";
+import { Navigate, useNavigate } from "react-router-dom";
+import { getCurrentToken, getCurrentUser, storeCurrentRoutine } from "./auth";
 
 const path = process.env.REACT_APP_BASE_URL;
 
 const MyProfile = () => {
   const [myResult, setmyResult] = useState([]);
 
-  
+  useEffect(() => {
+    console.log("2nd use effect")
+  }, [myResult]);
 
-
+  useEffect(() => {
+    const getAllData = async () => {
+      await test();
+    };
+    getAllData();
+  }, []);
 
   const user = getCurrentUser();
   //   console.log(user.username);
   const username = user.username;
   const token = getCurrentToken();
-  
+  const navigate = useNavigate();
+  let data = [];
+
   const deletePost = (id) => {
     console.log("hello", id);
     fetch(`${path}/routines/${id}`, {
@@ -31,7 +41,6 @@ const MyProfile = () => {
       .catch(console.error);
   };
 
-  let data = [];
   const test = async () => {
     const response = await fetch(`${path}/users/${username}/routines`, {
       headers: {
@@ -42,7 +51,7 @@ const MyProfile = () => {
     data = await response.json();
     console.log("DATA", data);
     console.log("DATA", data[0].name);
-    // console.log("DATA", data.isPublic);
+    console.log("DATA", data.isPublic);
 
     // const result3 = data.isPublic.filter(
     //     (post) => post.isPublic === false
@@ -56,28 +65,39 @@ const MyProfile = () => {
 
     // setmyResult(data);
   };
-  const onLoad = () => {
-    useEffect(() => {
-      test();
-    }, [test]);
-  };
-  onLoad();
+
+  const editRoutine = (routine) => {
+
+    console.log("Insided editRoutine and routine is", routine);
+    storeCurrentRoutine(routine);
+    navigate('/editRoutine');
+    console.log("Do we ever return to this point?");
+
+  }
+
+  //   test();
+
+  // const onLoad = () => {
+  //   useEffect(() => {
+  //     test();
+  //   }, [test]);
+  // };
+  // onLoad();
 
   return (
-    
     <div>
       <h1>{`${username}`}'s Routines</h1>
       <h1>
-        
         {myResult.map((singleItem, i) => {
           return (
             <div className="card" key={i}>
               <h2 className="postName">NAME: {singleItem.name}</h2>
               <h2 className="postName">Creator: {singleItem.creatorName}</h2>
               <h2 className="postName">Goal: {singleItem.goal}</h2>
+              <button type="button" onClick={() => editRoutine(singleItem)}>Edit Routine</button>
               <button type="button" onClick={() => deletePost(singleItem.id)}>
-                Delete Post
-              </button>
+                Delete Routine
+              </button>{" "}
               <hr></hr>
               {singleItem.activities.length ? (
                 singleItem.activities.map((activity, index) => {
@@ -97,7 +117,7 @@ const MyProfile = () => {
             </div>
           );
         })}
-     </h1>
+      </h1>
     </div>
   );
 };
