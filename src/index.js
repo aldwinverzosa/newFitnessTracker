@@ -28,11 +28,11 @@ const App = () => {
 
     if (currentUser) {
       console.log("Current user is ", currentUser);
-      setCurrentUser(currentUser);
+      //setCurrentUser(currentUser);
     }
   }, [currentUser]); 
 
-  if (currentUser && logInStr === "Log In") {
+  if (currentUser) {
     logInStr = "Log Out";
     } else {
     logInStr = "Log In";
