@@ -3,11 +3,10 @@ const chalk = require("chalk")
 const app = require("./app")
 const express = require('express');
 
-//const PORT = process.env["PORT"] ?? 3001
 const { PORT = 3001 } = process.env;
 
 
-const server = http.createServer(app)
+const server = http.createServer(app);
 
 server.listen(PORT, () => {
   console.log(
