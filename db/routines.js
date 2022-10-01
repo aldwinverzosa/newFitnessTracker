@@ -42,7 +42,7 @@ async function getAllRoutines() {
     JOIN users ON routines."creatorId" = users.id 
     `);
     console.log("About to call attachActivitiesToRoutines from getAllRoutines and routines is ", routines);
-    return attachActivitiesToRoutines(routines);
+    return attachActivitiesTxoRoutines(routines);
   } catch (error) {
     throw error;
   }
@@ -214,7 +214,6 @@ async function destroyRoutine(id) {
     FROM routines
     WHERE id=$1;
     `, [id]);
-
     deletedRoutine.success = true;
     return deletedRoutine;
   } catch (error) {
