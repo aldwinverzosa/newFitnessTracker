@@ -6,23 +6,15 @@ const path = process.env.REACT_APP_BASE_URL;
 const MyProfile = () => {
   const [myResult, setmyResult] = useState([]);
 
-  useEffect(() => {
-    console.log("2nd use effect")
-  }, [myResult]);
+  
 
-  useEffect(() => {
-    const getAllData = async () => {
-      await test();
-    };
-    getAllData();
-  }, []);
+
 
   const user = getCurrentUser();
   //   console.log(user.username);
   const username = user.username;
   const token = getCurrentToken();
-  let data = [];
-
+  
   const deletePost = (id) => {
     console.log("hello", id);
     fetch(`${path}/routines/${id}`, {
@@ -39,6 +31,7 @@ const MyProfile = () => {
       .catch(console.error);
   };
 
+  let data = [];
   const test = async () => {
     const response = await fetch(`${path}/users/${username}/routines`, {
       headers: {
@@ -49,7 +42,7 @@ const MyProfile = () => {
     data = await response.json();
     console.log("DATA", data);
     console.log("DATA", data[0].name);
-    console.log("DATA", data.isPublic);
+    // console.log("DATA", data.isPublic);
 
     // const result3 = data.isPublic.filter(
     //     (post) => post.isPublic === false
@@ -63,20 +56,19 @@ const MyProfile = () => {
 
     // setmyResult(data);
   };
-
-  //   test();
-
-  // const onLoad = () => {
-  //   useEffect(() => {
-  //     test();
-  //   }, [test]);
-  // };
-  // onLoad();
+  const onLoad = () => {
+    useEffect(() => {
+      test();
+    }, [test]);
+  };
+  onLoad();
 
   return (
+    
     <div>
       <h1>{`${username}`}'s Routines</h1>
       <h1>
+        
         {myResult.map((singleItem, i) => {
           return (
             <div className="card" key={i}>
@@ -85,7 +77,7 @@ const MyProfile = () => {
               <h2 className="postName">Goal: {singleItem.goal}</h2>
               <button type="button" onClick={() => deletePost(singleItem.id)}>
                 Delete Post
-              </button>{" "}
+              </button>
               <hr></hr>
               {singleItem.activities.length ? (
                 singleItem.activities.map((activity, index) => {
@@ -105,7 +97,7 @@ const MyProfile = () => {
             </div>
           );
         })}
-      </h1>
+     </h1>
     </div>
   );
 };

@@ -211,7 +211,6 @@ async function destroyRoutine(id) {
     FROM routines
     WHERE id=$1;
     `, [id]);
-
     deletedRoutine.success = true;
     return deletedRoutine;
   } catch (error) {
