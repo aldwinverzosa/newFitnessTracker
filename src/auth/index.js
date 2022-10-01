@@ -40,6 +40,21 @@
 
   }
 
+  function storeCurrentRoutine(routine) {
+    localStorage.setItem('currentRoutine', JSON.stringify(routine));
+  }
+
+  function getCurrentRoutine() {
+    const routine = JSON.parse(localStorage.getItem('currentRoutine'));
+    return routine;
+  }
+
+  function clearCurrentRoutine() {
+    console.log("Inside clearCurrentRoutine");
+    localStorage.removeItem('currentRoutine');
+
+  }
+
   module.exports = {
     storeCurrentToken,
     getCurrentToken,
@@ -50,5 +65,8 @@
     storeCurrentActivity,
     getCurrentActivity,
     clearCurrentActivity,
+    storeCurrentRoutine,
+    getCurrentRoutine,
+    clearCurrentRoutine,
     
   }

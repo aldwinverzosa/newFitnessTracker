@@ -83,15 +83,19 @@ async function attachActivitiesToRoutines(routines) {
 // return the new activity
 async function createActivity({ name, description }) {
 
+  console.log("Inside db/createAcitivity")
   try {
     const { rows } = await client.query(`
     INSERT INTO activities(name, description) VALUES ($1, $2)
-    --ON CONFLICT (name) DO NOTHING;
-    --RETURNING *;
+    ON CONFLICT (name) DO NOTHING
+    RETURNING *;
     `, [name, description]);
 
+    console.log("Inside db/createActivity and rows is", rows);
     return rows;
+   
   } catch (error) {
+    console.log("Error:", error);
     throw error;
   }
 

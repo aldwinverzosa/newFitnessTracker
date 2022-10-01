@@ -10,13 +10,16 @@ import AllRoutines from "./allRoutines";
 import AllActivities from "./allActivities";
 import EditActivity from "./editActivity";
 import MyProfile from "./myRoutines";
-import { clearCurrentToken, clearCurrentUser } from "./auth";
+import { clearCurrentActivity, clearCurrentRoutine, clearCurrentToken, clearCurrentUser } from "./auth";
 import CreateRoutine from './createRoutine';
+import CreateActivity from "./createActivity";
+import EditRoutine from "./editRoutine";
 
 const App = () => {
 
   const [currentUser, setCurrentUser] = useState(null);
   const [token, setToken] = useState(null);
+  
   let logInStr = '';
 
   let navigate = useNavigate();
@@ -25,11 +28,11 @@ const App = () => {
 
     if (currentUser) {
       console.log("Current user is ", currentUser);
-      
+      setCurrentUser(currentUser);
     }
   }, [currentUser]); 
 
-  if (currentUser) {
+  if (currentUser && logInStr === "Log In") {
     logInStr = "Log Out";
     } else {
     logInStr = "Log In";
@@ -42,6 +45,8 @@ const App = () => {
       setToken(null);
       clearCurrentUser();
       clearCurrentToken();
+      clearCurrentActivity();
+      clearCurrentRoutine();
     }
 }
 
@@ -65,21 +70,20 @@ const App = () => {
         </div>
 
         <Routes>
+         
           <Route path="/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} setToken={setToken} token={token}/>}></Route>
           <Route path="/register" element={<Register currentUser={currentUser} setCurrentUser={setCurrentUser} token={token} setToken={setToken}/>}></Route>
           <Route path="/dashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/" element={<Register/>}></Route>
-          <Route path="/allactivities" element={<AllActivities/>}></Route>
+          <Route path="/allactivities" element={<AllActivities currentUser={currentUser}/>}></Route>
           <Route path="/allroutines" element={<AllRoutines/>}></Route>
           <Route path="/loggedinDashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/editActivity" element={<EditActivity />}></Route>
+          <Route path="/editRoutine" element={<EditRoutine />}></Route>
+          <Route path="/createActivity" element={<CreateActivity />}></Route>
           <Route path="/myRoutines" element={<MyProfile />}></Route>
           <Route path="/createroutine" element={<CreateRoutine currentUser={currentUser}/>}></Route>
-
-
-
-
-
+         
         </Routes>
       </div>
 

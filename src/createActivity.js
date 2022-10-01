@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Redirect } from 'react-router-dom';
+import { useNavigate, redirect } from 'react-router-dom';
 import { getCurrentToken, getCurrentUser } from './auth';
 
 
-const EditActivity = (props) => {
+const CreateActivity = (props) => {
 
     const currentUser = props.currentUser;
+    const [state, setState] = useState(null);
 
     let navigate = useNavigate();
-    
+        
     const path = process.env.REACT_APP_BASE_URL;
     const token = getCurrentToken();
      
@@ -38,15 +39,16 @@ const EditActivity = (props) => {
               })
             });
             const data = await response.json();
-            if (data.success) {
-                console.log('data', data);
-                await getAllActivities();
-            } else {
-                console.log(data.message);
+            if (!data.success) {
+                
                 alert(data.message);
+            } else {
+                console.log('data', data);
+                alert("Activity successfully added...");
+                //await navigate("/allactivities");
             }
         }
-        navigate('/allActivities');
+        //navigate('/allactivities');
     }
    
     
@@ -71,4 +73,4 @@ const EditActivity = (props) => {
 
 }
 
-export default EditActivity;
+export default CreateActivity;

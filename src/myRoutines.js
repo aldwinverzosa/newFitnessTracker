@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getCurrentToken, getCurrentUser } from "./auth";
+import { Navigate, useNavigate } from "react-router-dom";
+import { getCurrentToken, getCurrentUser, storeCurrentRoutine } from "./auth";
 
 const path = process.env.REACT_APP_BASE_URL;
 
@@ -21,6 +22,7 @@ const MyProfile = () => {
   //   console.log(user.username);
   const username = user.username;
   const token = getCurrentToken();
+  const navigate = useNavigate();
   let data = [];
 
   const deletePost = (id) => {
@@ -64,6 +66,15 @@ const MyProfile = () => {
     // setmyResult(data);
   };
 
+  const editRoutine = (routine) => {
+
+    console.log("Insided editRoutine and routine is", routine);
+    storeCurrentRoutine(routine);
+    navigate('/editRoutine');
+    console.log("Do we ever return to this point?");
+
+  }
+
   //   test();
 
   // const onLoad = () => {
@@ -83,8 +94,9 @@ const MyProfile = () => {
               <h2 className="postName">NAME: {singleItem.name}</h2>
               <h2 className="postName">Creator: {singleItem.creatorName}</h2>
               <h2 className="postName">Goal: {singleItem.goal}</h2>
+              <button type="button" onClick={() => editRoutine(singleItem)}>Edit Routine</button>
               <button type="button" onClick={() => deletePost(singleItem.id)}>
-                Delete Post
+                Delete Routine
               </button>{" "}
               <hr></hr>
               {singleItem.activities.length ? (

@@ -136,16 +136,19 @@ async function getPublicRoutinesByActivity(id) {
   //Once I get those rows then I call map on each row to attach activity to routine.
   try {
     const { rows } = await client.query(`
-    SELECT "creatorId", "creatorName", "isPublic", routines.name, goal, routine_activities."routineId" AS id
+    SELECT routines.*
     FROM routines
     INNER JOIN routine_activities
-      ON routines.id=routine_activities."routineId"
-    INNER JOIN activities
-      ON activities.id=routine_activities."routineActivityId"
-    WHERE routines.id=routine_activities."routineId" AND routines."isPublic" = true;
-    `);
+      ON routine_activities."routineId"=routines.id AND routine_activities."routineActivityId"=$1
+    WHERE routines."isPublic"=true;
+    `, [id]);
 
-    return rows;
+    if (rows.length) {
+      const routines = attachActivitiesToRoutines(rows);
+      return(routines);
+    } else {
+      return({success: false, message: "No public routines for this activity"});
+    }
   } catch (error) {
     throw error;
   }

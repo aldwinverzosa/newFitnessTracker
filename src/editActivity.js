@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Redirect } from 'react-router-dom';
+import { Navigate, useNavigate, Redirect } from 'react-router-dom';
 import { clearCurrentActivity, getCurrentActivity } from './auth';
-
 
 const EditActivity = () => {
 
@@ -10,7 +9,8 @@ const EditActivity = () => {
     const path = process.env.REACT_APP_BASE_URL;
     const activity = getCurrentActivity();
     const id = activity.id;
-            
+
+                
     const handleSubmit = (event) => {
         event.preventDefault();
     }
@@ -35,8 +35,7 @@ const EditActivity = () => {
         const data = await response.json();
         console.log('data', data);
         clearCurrentActivity();
-        await getAllActivities();
-        navigate('/allActivities');
+        navigate('/allactivities');
     }
    
     
@@ -57,7 +56,6 @@ const EditActivity = () => {
         </div>
                 
     )
-
 
 }
 
