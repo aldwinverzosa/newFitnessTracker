@@ -6,7 +6,7 @@ const router = express.Router();
 const { getAllRoutines, createRoutine, updateRoutine, getRoutineById, destroyRoutine } = require('../db/routines')
 const { requireUser } = require('./utils');
 const { getUserById } = require('../db/users');
-const { reset } = require('nodemon');
+//const { reset } = require('nodemon');
 
 // GET /api/routines
 router.get('/', async (req, res) => {
