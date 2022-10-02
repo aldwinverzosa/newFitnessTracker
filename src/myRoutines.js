@@ -18,6 +18,9 @@ const MyProfile = () => {
     getAllData();
   }, []);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  }
   const user = getCurrentUser();
   //   console.log(user.username);
   const username = user.username;
@@ -94,9 +97,7 @@ const MyProfile = () => {
               <h2 className="postName">Creator: {singleItem.creatorName}</h2>
               <h2 className="postName">Goal: {singleItem.goal}</h2>
               <button type="button" onClick={() => editRoutine(singleItem)}>Edit Routine</button>
-              <button type="button" onClick={() => deletePost(singleItem.id)}>
-                Delete Routine
-              </button>{" "}
+              <button type="button" onClick={() => deletePost(singleItem.id)}>Delete Routine</button>
               <hr></hr>
               {singleItem.activities.length ? (
                 singleItem.activities.map((activity, index) => {
@@ -113,6 +114,7 @@ const MyProfile = () => {
               ) : (
                 <></>
               )}
+              
             </div>
           );
         })}
