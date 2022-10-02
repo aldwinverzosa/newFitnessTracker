@@ -9,7 +9,7 @@ const { PORT = 3001 } = process.env;
 
 const server = http.createServer(app);
 
-server.listen(PORT, () => {
+server.listen(process.env.PORT, () => {
   console.log(
     chalk.blueBright("Server is listening on PORT:"),
     chalk.yellow(PORT),
