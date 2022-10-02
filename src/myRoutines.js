@@ -71,8 +71,7 @@ const MyProfile = () => {
     console.log("Insided editRoutine and routine is", routine);
     storeCurrentRoutine(routine);
     navigate('/editRoutine');
-    console.log("Do we ever return to this point?");
-
+    
   }
 
   //   test();

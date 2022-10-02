@@ -43,7 +43,7 @@ const EditRoutine = () => {
     return (
 
         <div className="edit-routine">
-            <form id="editform" className="edit" > {/*onClick={ handleSubmit }>*/}
+            <form id="editform" className="edit" onClick={ handleSubmit }> {/*onClick={ handleSubmit }>*/}
             {
                 <>
                     <label htmlFor="name">Routine Name: </label>

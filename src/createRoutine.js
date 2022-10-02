@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { getCurrentToken, getCurrentUser } from "./auth";
 
 //DELETE /api/routines/:routineId (**)
@@ -10,15 +10,19 @@ const CreateRoutine = () => {
   const [name, setname] = useState("");
   const [goal, setgoal] = useState("");
 
+  const navigate = useNavigate();
+
   const user = getCurrentUser();
   //   console.log(user.username);
     const username = user.username;
     const token = getCurrentToken();
     let data = [];
 
- 
+  const handleSubmit = (event) => {
+      event.preventDefault();
+  }
   const PostHandle = async (ev) => {
-    ev.preventDefault();
+    
     console.log("name", name);
     console.log("goal", goal);
     const response = await fetch(`${path}/routines`, {
@@ -40,6 +44,7 @@ const CreateRoutine = () => {
 
     setname("");
     setgoal("");
+    navigate('/myRoutines')
   };
 
   return (
@@ -51,7 +56,7 @@ const CreateRoutine = () => {
         </div>
 
       <h1>Create Routine</h1>
-      <form onSubmit={PostHandle}>
+      <form onSubmit={handleSubmit}>
         Routine Name
         <input
           type="text"
@@ -71,7 +76,7 @@ const CreateRoutine = () => {
           }}
         ></input>
   
-        <button type="text">Create</button>
+        <button type="text" onClick={PostHandle}>Create</button>
       </form>
     </div>
   );

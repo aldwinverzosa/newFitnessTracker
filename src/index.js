@@ -24,19 +24,15 @@ const App = () => {
 
   let navigate = useNavigate();
   
-  useEffect(() => {
+  //useEffect(() => {
 
-    if (currentUser) {
-      console.log("Current user is ", currentUser);
-      //setCurrentUser(currentUser);
-    }
-  }, [currentUser]); 
+    //if (currentUser) {
+    //  console.log("Current user is ", currentUser);
+    //  setCurrentUser(currentUser);
+   // }
+  //}, [currentUser]); 
 
-  if (currentUser) {
-    logInStr = "Log Out";
-    } else {
-    logInStr = "Log In";
-  }
+  
 
   const logOutUser = () => {
 
@@ -48,7 +44,14 @@ const App = () => {
       clearCurrentActivity();
       clearCurrentRoutine();
     }
-}
+  }
+
+  if (currentUser) {
+    logInStr = "Log Out";
+    } else {
+      console.log("Why are we coming here");
+    logInStr = "Log In";
+  }
 
   return (
     <div>

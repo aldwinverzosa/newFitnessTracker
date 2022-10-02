@@ -73,7 +73,7 @@ const AllRoutines = () => {
               singleItem.activities.length ?
               singleItem.activities.map((activity, index) => {
                 return (
-                  <>
+                  <div key={index}>
                   <h3>Activity Name: {activity.name}</h3>
                   <h3>Activity Description: {activity.description}</h3>
                   <h3>Activity Duration: {activity.duration}</h3>
@@ -81,7 +81,7 @@ const AllRoutines = () => {
                   <h3>Routine Activity ID: {activity.routineActivityId}</h3>
                   <button onClick={() => removeActivity(activity.routineActivityId)}>Remove Activity</button>
                   <hr></hr>
-                  </>
+                  </div>
                 )
               })
               :

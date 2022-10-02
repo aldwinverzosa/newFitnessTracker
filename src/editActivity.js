@@ -42,7 +42,7 @@ const EditActivity = () => {
     return (
 
         <div className="edit-activity">
-            <form id="editform" className="edit" > {/*onClick={ handleSubmit }>*/}
+            <form id="editform" className="edit" onClick={ handleSubmit }> {/*onClick={ handleSubmit }>*/}
             {
                 <>
                     <label htmlFor="title">Enter Activty Name: </label>
