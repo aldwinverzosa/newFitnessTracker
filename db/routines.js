@@ -56,7 +56,8 @@ async function getAllRoutinesByUser(username) {
     const { rows: routines } = await client.query(`
     SELECT * 
     FROM routines
-    WHERE "creatorName"=$1;
+    WHERE "creatorName"=$1
+    ORDER BY id;
    `, [username]);
 
    console.log("About to call attach from getAllRoutinesByUser and user routines are ", routines);
