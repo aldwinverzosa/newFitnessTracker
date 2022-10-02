@@ -82,7 +82,7 @@ const App = () => {
           <Route path="/createroutine" element={<CreateRoutine currentUser={currentUser}/>}></Route>
           <Route path="/addActivity" element={<AddActivity allActivities={allActivities}/>}></Route>
           <Route path="/viewPublicRoutines" element={<ViewPublicRoutines setViewPublicRoutines={setViewPublicRoutines} viewPublicRoutines={viewPublicRoutines}/>}></Route>
-          <Route path="/" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} setToken={setToken} token={token}/>}></Route>
+          
         </Routes>
       </div>
 

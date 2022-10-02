@@ -20,7 +20,7 @@ const AllRoutines = () => {
   }, []);
 
   const getAllRoutines = async () => {
-    const response = await fetch(`http://localhost:3001/api/routines`);
+    const response = await fetch(`${path}/routines`);
     const data = await response.json();
     console.log("DATA", data);
     setallRoutines(data);

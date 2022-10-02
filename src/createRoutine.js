@@ -14,6 +14,7 @@ const CreateRoutine = () => {
 
   const user = getCurrentUser();
   //   console.log(user.username);
+    
     const username = user.username;
     const token = getCurrentToken();
     let data = [];
