@@ -29,7 +29,7 @@ const Register = (props) => {
     } else {
          
       console.log("NAME AND PASSWORD", newUser, newPassword);
-      const response = await fetch("http://localhost:3001/api/users/register", {
+      const response = await fetch(`${path}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

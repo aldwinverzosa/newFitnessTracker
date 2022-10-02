@@ -20,7 +20,7 @@ const AllRoutines = () => {
   }, []);
 
   const getAllRoutines = async () => {
-    const response = await fetch(`http://localhost:3001/api/routines`);
+    const response = await fetch(`${path}/routines`);
     const data = await response.json();
     console.log("DATA", data);
     setallRoutines(data);
@@ -73,7 +73,7 @@ const AllRoutines = () => {
               singleItem.activities.length ?
               singleItem.activities.map((activity, index) => {
                 return (
-                  <>
+                  <div key={index}>
                   <h3>Activity Name: {activity.name}</h3>
                   <h3>Activity Description: {activity.description}</h3>
                   <h3>Activity Duration: {activity.duration}</h3>
@@ -81,7 +81,7 @@ const AllRoutines = () => {
                   <h3>Routine Activity ID: {activity.routineActivityId}</h3>
                   <button onClick={() => removeActivity(activity.routineActivityId)}>Remove Activity</button>
                   <hr></hr>
-                  </>
+                  </div>
                 )
               })
               :

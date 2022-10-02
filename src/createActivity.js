@@ -45,7 +45,7 @@ const CreateActivity = (props) => {
             } else {
                 console.log('data', data);
                 alert("Activity successfully added...");
-                //await navigate("/allactivities");
+                await navigate("/allactivities");
             }
         }
         //navigate('/allactivities');
@@ -55,7 +55,7 @@ const CreateActivity = (props) => {
     return (
 
         <div className="create-activity">
-            <form id="editform" className="edit" > {/*onClick={ handleSubmit }>*/}
+            <form id="editform" className="edit" onClick={ handleSubmit } > {/*onClick={ handleSubmit }>*/}
             {
                 <>
                     <label htmlFor="title">Enter Activty Name: </label>

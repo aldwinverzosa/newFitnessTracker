@@ -14,30 +14,22 @@ import { clearCurrentActivity, clearCurrentRoutine, clearCurrentToken, clearCurr
 import CreateRoutine from './createRoutine';
 import CreateActivity from "./createActivity";
 import EditRoutine from "./editRoutine";
+import AddActivity from "./addActivity";
+import ViewPublicRoutines from './viewPublicRoutines';
+
 
 const App = () => {
 
   const [currentUser, setCurrentUser] = useState(null);
+  const [viewPublicRoutines, setViewPublicRoutines] = useState([]);
+  const [allActivities, setAllActivities] = useState([]);
   const [token, setToken] = useState(null);
+  
   
   let logInStr = '';
 
   let navigate = useNavigate();
   
-  useEffect(() => {
-
-    if (currentUser) {
-      console.log("Current user is ", currentUser);
-      //setCurrentUser(currentUser);
-    }
-  }, [currentUser]); 
-
-  if (currentUser) {
-    logInStr = "Log Out";
-    } else {
-    logInStr = "Log In";
-  }
-
   const logOutUser = () => {
 
     if (currentUser && logInStr === "Log Out") {
@@ -48,7 +40,14 @@ const App = () => {
       clearCurrentActivity();
       clearCurrentRoutine();
     }
-}
+  }
+
+  if (currentUser) {
+    logInStr = "Log Out";
+    } else {
+      console.log("Why are we coming here");
+    logInStr = "Log In";
+  }
 
   return (
     <div>
@@ -60,8 +59,6 @@ const App = () => {
             <li className="list-item"><Link to="/allactivities">Activities</Link></li>
             <li className="list-item"><Link to="/myRoutines">My Routines</Link></li>
             <li className="list-item"><Link to="/createroutine">Create Routine</Link></li> 
-
-
             <li className="list-item"><Link to="/register">Register</Link></li>
             <li className="list-item" onClick={logOutUser}><Link to="/login">{logInStr}</Link></li>
           </ul>
@@ -74,8 +71,8 @@ const App = () => {
           <Route path="/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} setToken={setToken} token={token}/>}></Route>
           <Route path="/register" element={<Register currentUser={currentUser} setCurrentUser={setCurrentUser} token={token} setToken={setToken}/>}></Route>
           <Route path="/dashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
-          <Route path="/" element={<Register/>}></Route>
-          <Route path="/allactivities" element={<AllActivities currentUser={currentUser}/>}></Route>
+          <Route path="/allactivities" element={<AllActivities currentUser={currentUser} setViewPublicRoutines={setViewPublicRoutines} viewPublicRoutines={viewPublicRoutines}
+                                                allActivities={allActivities} setAllActivities={setAllActivities}/>}></Route>
           <Route path="/allroutines" element={<AllRoutines/>}></Route>
           <Route path="/loggedinDashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/editActivity" element={<EditActivity />}></Route>
@@ -83,7 +80,9 @@ const App = () => {
           <Route path="/createActivity" element={<CreateActivity />}></Route>
           <Route path="/myRoutines" element={<MyProfile />}></Route>
           <Route path="/createroutine" element={<CreateRoutine currentUser={currentUser}/>}></Route>
-         
+          <Route path="/addActivity" element={<AddActivity allActivities={allActivities}/>}></Route>
+          <Route path="/viewPublicRoutines" element={<ViewPublicRoutines setViewPublicRoutines={setViewPublicRoutines} viewPublicRoutines={viewPublicRoutines}/>}></Route>
+          
         </Routes>
       </div>
 

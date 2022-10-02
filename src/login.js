@@ -29,7 +29,7 @@ const Login = (props) => {
 
     console.log("User name and password are ", document.getElementById("username").value, document.getElementById("password").value);
 
-    const response = await fetch("http://localhost:3001/api/users/login", {
+    const response = await fetch(`${path}/users/login`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
