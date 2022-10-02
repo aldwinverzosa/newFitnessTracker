@@ -8,6 +8,10 @@ import { clearCurrentActivity, storeCurrentActivity } from "./auth";
 const AllActivities = (props) => {
 
   const [activities, setAllActivities] = useState([]);
+  const viewPublicRoutines = props.viewPublicRoutines;
+  const setViewPublicRoutines = props.setViewPublicRoutines
+  
+  
   const currentUser = props.currentUser;
   
   console.log("Current User is ", currentUser);
@@ -51,6 +55,8 @@ const AllActivities = (props) => {
         
     if (data.success) {
       console.log(data);
+      setViewPublicRoutines(data);
+      navigate('/viewPublicRoutines');
     } else {
       alert("No public routines for this activity");
     }

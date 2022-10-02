@@ -14,26 +14,20 @@ import { clearCurrentActivity, clearCurrentRoutine, clearCurrentToken, clearCurr
 import CreateRoutine from './createRoutine';
 import CreateActivity from "./createActivity";
 import EditRoutine from "./editRoutine";
+import ViewPublicRoutines from './viewPublicRoutines';
+
 
 const App = () => {
 
   const [currentUser, setCurrentUser] = useState(null);
+  const [viewPublicRoutines, setViewPublicRoutines] = useState([]);
   const [token, setToken] = useState(null);
+  
   
   let logInStr = '';
 
   let navigate = useNavigate();
   
-  //useEffect(() => {
-
-    //if (currentUser) {
-    //  console.log("Current user is ", currentUser);
-    //  setCurrentUser(currentUser);
-   // }
-  //}, [currentUser]); 
-
-  
-
   const logOutUser = () => {
 
     if (currentUser && logInStr === "Log Out") {
@@ -78,7 +72,7 @@ const App = () => {
           <Route path="/register" element={<Register currentUser={currentUser} setCurrentUser={setCurrentUser} token={token} setToken={setToken}/>}></Route>
           <Route path="/dashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/" element={<Register/>}></Route>
-          <Route path="/allactivities" element={<AllActivities currentUser={currentUser}/>}></Route>
+          <Route path="/allactivities" element={<AllActivities currentUser={currentUser} setViewPublicRoutines={setViewPublicRoutines} viewPublicRoutines={viewPublicRoutines}/>}></Route>
           <Route path="/allroutines" element={<AllRoutines/>}></Route>
           <Route path="/loggedinDashboard" element={<LoggedInDashboard currentUser={currentUser}/>}></Route>
           <Route path="/editActivity" element={<EditActivity />}></Route>
@@ -86,6 +80,7 @@ const App = () => {
           <Route path="/createActivity" element={<CreateActivity />}></Route>
           <Route path="/myRoutines" element={<MyProfile />}></Route>
           <Route path="/createroutine" element={<CreateRoutine currentUser={currentUser}/>}></Route>
+          <Route path="/viewPublicRoutines" element={<ViewPublicRoutines setViewPublicRoutines={setViewPublicRoutines} viewPublicRoutines={viewPublicRoutines}/>}></Route>
          
         </Routes>
       </div>
