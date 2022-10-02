@@ -7,7 +7,9 @@ import { clearCurrentActivity, storeCurrentActivity } from "./auth";
 
 const AllActivities = (props) => {
 
-  const [activities, setAllActivities] = useState([]);
+  //const [activities, setAllActivities] = useState([]);
+  const activities = props.allActivities;
+  const setAllActivities = props.setAllActivities;
   const viewPublicRoutines = props.viewPublicRoutines;
   const setViewPublicRoutines = props.setViewPublicRoutines
   

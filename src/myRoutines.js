@@ -77,6 +77,11 @@ const MyProfile = () => {
     
   }
 
+  const addActivity = () => {
+
+    navigate("/addActivity");
+  }
+
   //   test();
 
   // const onLoad = () => {
@@ -98,15 +103,18 @@ const MyProfile = () => {
               <h2 className="postName">Goal: {singleItem.goal}</h2>
               <button type="button" onClick={() => editRoutine(singleItem)}>Edit Routine</button>
               <button type="button" onClick={() => deletePost(singleItem.id)}>Delete Routine</button>
+              <button type="button" onClick={addActivity}>Add Activity</button>
               <hr></hr>
               {singleItem.activities.length ? (
                 singleItem.activities.map((activity, index) => {
                   return (
                     <>
+                      <h3>Activity ID: {activity.id}</h3>
                       <h3>Activity Name: {activity.name}</h3>
                       <h3>Activity Description: {activity.description}</h3>
                       <h3>Activity Duration: {activity.duration}</h3>
                       <h3>Activity Count: {activity.count}</h3>
+                      <button>Delete Activity</button>
                       <hr></hr>
                     </>
                   );
